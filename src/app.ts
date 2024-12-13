@@ -22,32 +22,32 @@ const IP_ADDR = getLocalIPAddres();
 
 export const soldPropertyService = new SoldPropertyService();
 
-async function updateAndWriteGraphFunctions(): Promise<void> {
-  try {
-    await runDatasetUpdate();
+// async function updateAndWriteGraphFunctions(): Promise<void> {
+//   try {
+//     await runDatasetUpdate();
 
-    await soldPropertyService.loadProperties(config.DATASET_PATH);
-    await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+//     await soldPropertyService.loadProperties(config.DATASET_PATH);
+//     await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
 
-    console.log('Graph functions have been written successfully.');
-  } catch (err) {
-    console.error('Error in the dataset update or graph function write:', err);
-  }
-}
+//     console.log('Graph functions have been written successfully.');
+//   } catch (err) {
+//     console.error('Error in the dataset update or graph function write:', err);
+//   }
+// }
 
-cron.schedule('0 3 * * 6', async () => {
-  await updateAndWriteGraphFunctions();
-});
+// cron.schedule('0 3 * * 6', async () => {
+//   await updateAndWriteGraphFunctions();
+// });
 
-fileUtil.checkFileExists(config.DATASET_PATH)
-    .then(async (doesFileExist) => {
-      if (!doesFileExist) {
-        await updateAndWriteGraphFunctions();
-      }
-    })
-    .catch((err) => {
-      console.error('Error checking if file exists:', err);
-});
+// fileUtil.checkFileExists(config.DATASET_PATH)
+//     .then(async (doesFileExist) => {
+//       if (!doesFileExist) {
+//         await updateAndWriteGraphFunctions();
+//       }
+//     })
+//     .catch((err) => {
+//       console.error('Error checking if file exists:', err);
+// });
 
 const app = express();
 
