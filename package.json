@@ -41,6 +41,7 @@
     "sinon": "^19.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "unzipper": "^0.12.3",
     "winston": "^3.14.2"
   },
   "devDependencies": {
