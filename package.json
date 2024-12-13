@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/express-session": "^1.18.0",
     "@types/node-cron": "^3.0.11",
+    "@types/unzipper": "^0.10.10",
     "axios": "^1.7.8",
     "bcryptjs": "^2.4.3",
     "chai-http": "^5.1.1",
