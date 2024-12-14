@@ -19,7 +19,6 @@ import cors from "cors";
 import {loggingMiddleware} from "./middlewares/logging.middleware";
 const version1 = 1;
 export const api_prefix_v1 = `/api/v${version1}`;
-const IP_ADDR = getLocalIPAddres();
 
 export const soldPropertyService = new SoldPropertyService();
 
@@ -56,7 +55,7 @@ app.use(express.json());
 app.use(errorMiddleware);
 app.use(loggingMiddleware);
 app.use(cors<Request>({
-  origin: [`http://localhost:${config.PORT}`, `https://${IP_ADDR}:${config.PORT}`],
+  origin: [`*`],
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -71,7 +70,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http${config.ENV === 'test' ? 's' : ''}://10.0.0.37:3000${api_prefix_v1}`,
+        url: `https://homeaiservice.onrender.com/api/v1`,
         description: 'Development server (HTTP) for v1',
       },
     ],
