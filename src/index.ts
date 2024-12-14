@@ -43,24 +43,9 @@ db.on("error", console.error.bind(console, "Connection error to mongo db"));
 db.once('open', () => {
   console.log('=== Connected to MongoDb Collection ===');
 });
+app.listen(Number(port), "0.0.0.0", async () => {
+  console.log(`Server is running on https://${IP_ADDR}:${port}`);
+  console.log(`API docs are running on: https://${IP_ADDR}:${port}${api_prefix_v1}/docs`);
+  Inference.GetInferenceSession();
+});
 
-if (config.ENV === "production") {
-  // For Render, HTTPS is automatically handled, so use HTTP.
-  app.listen(Number(port), "0.0.0.0", async () => {
-    console.log(`Server is running on http://0.0.0.0:${port}`);
-    console.log(`API docs are running on: http://0.0.0.0:${port}${api_prefix_v1}/docs`);
-    Inference.GetInferenceSession();
-  });
-} else {
-  // In non-production environments, you can still handle HTTPS yourself if needed
-  const httpsOptions: https.ServerOptions = {
-    key: fs.readFileSync(path.resolve(config.CERT_KEY ?? "")),
-    cert: fs.readFileSync(path.resolve(config.CERT_CERT ?? "")),
-  };
-
-  https.createServer(httpsOptions, app).listen(Number(port), "0.0.0.0", undefined, async () => {
-    console.log(`Server is running on https://${IP_ADDR}:${port}`);
-    console.log(`API docs are running on: https://${IP_ADDR}:${port}${api_prefix_v1}/docs`);
-    Inference.GetInferenceSession();
-  });
-}
