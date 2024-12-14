@@ -6,7 +6,6 @@ import { errorMiddleware } from './middlewares/error.middleware';
 import AuthenticationFilter from './middlewares/auth.middleware';
 import authRoute from './routes/auth.route';
 import listingRoute from "./routes/listings.route"
-import { getLocalIPAddres } from './utils/security.util';
 import realtorRoute from './routes/realtor.route';
 import cron from 'node-cron';
 import { runDatasetUpdate } from './utils/update_dataset.util';

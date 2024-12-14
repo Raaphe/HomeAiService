@@ -9,8 +9,9 @@ const CLUSTER_URL = config.CLUSTER_URL || "";
 const CLUSTER_URL_TEST = config.CLUSTER_URL_TEST || "";
 const TEST_DB_NAME = config.TEST_DB_NAME;
 const DB_NAME = config.DB_NAME;
+const PORT = process.env.PORT || 10000;
 
-app.listen("0.0.0.0", async () => {
+app.listen(Number(PORT), "0.0.0.0", async () => {
   console.log(`Server is running on https://homeaiservice.onrender.com`);
   console.log(`API docs are running on: https://homeaiservice.onrender.com${api_prefix_v1}/docs`);
   Inference.GetInferenceSession();
