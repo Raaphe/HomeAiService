@@ -55,9 +55,9 @@ app.use(express.json());
 app.use(errorMiddleware);
 app.use(loggingMiddleware);
 app.use(cors<Request>({
-  origin: [`*`],
+  origin: '*',
   methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: '*',
 }));
 
 const swaggerOptions = {
