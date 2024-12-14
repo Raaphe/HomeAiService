@@ -15,7 +15,7 @@ yarn-error.log*
 # .env
 
 # Cache et données temporaires
-*.tsbuildinfo
+*.tsbuildinfox`
 .DS_Store
 .idea/
 .vscode/

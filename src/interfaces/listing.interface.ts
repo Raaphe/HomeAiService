@@ -1,4 +1,4 @@
-import {Price} from "../payloads/dto/listing.dto.ts";
+import {Price} from "../payloads/dto/listing.dto";
 
 
 export interface IProperty {

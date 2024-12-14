@@ -1,8 +1,8 @@
-import { ListingDetailed, ListingOverview } from "../payloads/dto/listing.dto.ts";
+import { ListingDetailed, ListingOverview } from "../payloads/dto/listing.dto";
 import axios from "axios";
-import ListingService from "../services/listing.service.ts";
-import InferenceService from "../services/inference.service.ts";
-import HouseDTO from "../payloads/dto/houseInfo.dto.ts";
+import ListingService from "../services/listing.service";
+import InferenceService from "../services/inference.service";
+import HouseDTO from "../payloads/dto/houseInfo.dto";
 
 class RealtorApi {
     static baseUrl: string = "https://real-estate-api-xi.vercel.app";

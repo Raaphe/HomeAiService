@@ -1,4 +1,4 @@
-import ResponseObject from "../interfaces/response.interface.ts";
+import ResponseObject from "../interfaces/response.interface";
 
 export default class Custom_request_parserUtil {
     /**

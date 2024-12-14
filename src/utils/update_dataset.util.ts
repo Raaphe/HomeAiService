@@ -2,7 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import unzipper from 'unzipper';
-import { config } from '../config/config.ts';
+import { config } from '../config/config';
 
 async function updateDataset(datasetPath: string): Promise<void> {
     const datasetUrl = `https://www.kaggle.com/api/v1/datasets/download/ahmedshahriarsakib/usa-real-estate-dataset`;

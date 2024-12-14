@@ -1,6 +1,6 @@
 import { InferenceSession } from "onnxruntime-web";
-import { config } from "../config/config.ts";
-import { loggerUtil } from "../utils/logger.util.ts";
+import { config } from "../config/config";
+import { loggerUtil } from "../utils/logger.util";
 import path from "path";
 
 export default class Inference {
@@ -8,7 +8,8 @@ export default class Inference {
     public hasLoaded = false;
     public inferenceSession: InferenceSession | undefined;
 
-    private modelName: string = path.resolve(__dirname, `./${config.MODEL_NAME}.onnx`);
+    private modelName: string = path.resolve(__dirname, `${config.MODEL_NAME}.onnx`);
+
     private static instance: Inference;
      
     private constructor() {

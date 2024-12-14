@@ -1,5 +1,5 @@
 
-import AuthenticationDTO from "./auth.dto.ts";
+import AuthenticationDTO from "./auth.dto";
 
 export default interface RegistrationDTO extends AuthenticationDTO {
     first_name: string;

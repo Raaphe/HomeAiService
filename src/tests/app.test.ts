@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { describe, it } from 'mocha';
-import app from '../app.ts';
+import app from '../app';
 
 let expect: Chai.ExpectStatic;
 

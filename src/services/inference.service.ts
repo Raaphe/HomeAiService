@@ -1,9 +1,9 @@
-import HouseDTO from "../payloads/dto/houseInfo.dto.ts";
+import HouseDTO from "../payloads/dto/houseInfo.dto";
 import * as ort from "onnxruntime-web" ;
-import Inference from "../inference/inference.ts";
-import ResponseObject from "../interfaces/response.interface.ts";
-import LabelEncoder from "../utils/label_encoder.util.ts";
-import { loggerUtil } from "../utils/logger.util.ts";
+import Inference from "../inference/inference";
+import ResponseObject from "../interfaces/response.interface";
+import LabelEncoder from "../utils/label_encoder.util";
+import { loggerUtil } from "../utils/logger.util";
 
 export default class InferenceService {
 

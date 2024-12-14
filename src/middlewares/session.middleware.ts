@@ -1,6 +1,5 @@
-// src/middlewares/session.middleware.ts
 import session from 'express-session';
-import { config } from '../config/config.ts';
+import { config } from '../config/config';
 
 export const sessionMiddleware = session({
   secret: config.JWT_SECRET,

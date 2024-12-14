@@ -1,5 +1,5 @@
 import axios from "axios";
-import {config} from "../config/config.ts";
+import {config} from "../config/config";
 
 class AttomApi {
     static baseUrl: string = "https://api.gateway.attomdata.com/propertyapi/v1.0.0";

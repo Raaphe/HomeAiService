@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { SoldPropertyController } from "../controllers/sold-property.controller.ts";
+import { SoldPropertyController } from "../controllers/sold-property.controller";
 
 const router = Router();
 const soldPropertyController = new SoldPropertyController();

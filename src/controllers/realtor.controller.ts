@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
-import RealtorApi from "../api/realtor.api.ts";
-import InferenceService from "../services/inference.service.ts";
-import { loggerUtil } from "../utils/logger.util.ts";
-import realtorApi from "../api/realtor.api.ts";
-import {UserService} from "../services/users.service.ts";
-import {SoldPropertyService} from "../services/sold-property.service.ts";
+import RealtorApi from "../api/realtor.api";
+import realtorApi from "../api/realtor.api";
 
 export class RealtorController {
 

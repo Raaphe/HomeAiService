@@ -2,58 +2,64 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
-import { errorMiddleware } from './middlewares/error.middleware.ts';
-import AuthenticationFilter from './middlewares/auth.middleware.ts';
-import authRoute from './routes/auth.route.ts';
-import listingRoute from "./routes/listings.route.ts"
-import { getLocalIPAddres } from './utils/security.util.ts';
-import realtorRoute from './routes/realtor.route.ts';
+import { errorMiddleware } from './middlewares/error.middleware';
+import AuthenticationFilter from './middlewares/auth.middleware';
+import authRoute from './routes/auth.route';
+import listingRoute from "./routes/listings.route"
+import { getLocalIPAddres } from './utils/security.util';
+import realtorRoute from './routes/realtor.route';
 import cron from 'node-cron';
-import { runDatasetUpdate } from './utils/update_dataset.util.ts';
-import { SoldPropertyService } from './services/sold-property.service.ts';
-import { config } from './config/config.ts';
-import fileUtil from './utils/file.util.ts';
-import soldPropertyRoute from "./routes/sold-property.route.ts";
+import { runDatasetUpdate } from './utils/update_dataset.util';
+import { SoldPropertyService } from './services/sold-property.service';
+import { config } from './config/config';
+import fileUtil from './utils/file.util';
+import soldPropertyRoute from "./routes/sold-property.route";
 import fs from "fs";
 import cors from "cors";
+import {loggingMiddleware} from "./middlewares/logging.middleware";
 const version1 = 1;
 export const api_prefix_v1 = `/api/v${version1}`;
 const IP_ADDR = getLocalIPAddres();
 
 export const soldPropertyService = new SoldPropertyService();
 
-// async function updateAndWriteGraphFunctions(): Promise<void> {
-//   try {
-//     await runDatasetUpdate();
-//
-//     await soldPropertyService.loadProperties(config.DATASET_PATH);
-//     await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
-//
-//     console.log('Graph functions have been written successfully.');
-//   } catch (err) {
-//     console.error('Error in the dataset update or graph function write:', err);
-//   }
-// }
+async function updateAndWriteGraphFunctions(): Promise<void> {
+  try {
+    await runDatasetUpdate();
 
-// cron.schedule('0 3 * * 6', async () => {
-//   await updateAndWriteGraphFunctions();
-// });
-//
-// fileUtil.checkFileExists(config.DATASET_PATH)
-//     .then(async (doesFileExist) => {
-//       if (!doesFileExist) {
-//         await updateAndWriteGraphFunctions();
-//       }
-//     })
-//     .catch((err) => {
-//       console.error('Error checking if file exists:', err);
-// });
+    await soldPropertyService.loadProperties(config.DATASET_PATH);
+    await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+
+    console.log('Graph functions have been written successfully.');
+  } catch (err) {
+    console.error('Error in the dataset update or graph function write:', err);
+  }
+}
+
+cron.schedule('0 3 * * 6', async () => {
+  await updateAndWriteGraphFunctions();
+});
+
+fileUtil.checkFileExists(config.DATASET_PATH)
+    .then(async (doesFileExist) => {
+      if (!doesFileExist) {
+        await updateAndWriteGraphFunctions();
+      }
+    })
+    .catch((err) => {
+      console.error('Error checking if file exists:', err);
+});
 
 const app = express();
 
 app.use(express.json());
 app.use(errorMiddleware);
-app.use(cors<Request>);
+app.use(loggingMiddleware);
+app.use(cors<Request>({
+  origin: [`http://localhost:${config.PORT}`, `https://${IP_ADDR}:${config.PORT}`],
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 const swaggerOptions = {
   definition: {
@@ -65,7 +71,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http${config.ENV === 'test' ? 's' : ''}://${IP_ADDR}:3000${api_prefix_v1}`,
+        url: `http${config.ENV === 'test' ? 's' : ''}://10.0.0.37:3000${api_prefix_v1}`,
         description: 'Development server (HTTP) for v1',
       },
     ],
@@ -84,8 +90,11 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: [path.join(__dirname, './routes/*.ts')],
+  apis: [path.join(__dirname, './routes/*.js')],
 };
+
+console.log("=============== HERE")
+console.log([path.join(__dirname, './routes/*.ts')])
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));

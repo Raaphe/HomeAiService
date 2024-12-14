@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {soldPropertyService} from "../app.ts";
+import {soldPropertyService} from "../app";
 
 export class SoldPropertyController {
     private static GRAPH_DATA_PATH = '../data/graph-data.json'

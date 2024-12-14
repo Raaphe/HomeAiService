@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { RealtorController } from '../controllers/realtor.controller.ts';
+import { RealtorController } from '../controllers/realtor.controller';
 
 const router = Router();
 const realtorController = new RealtorController();

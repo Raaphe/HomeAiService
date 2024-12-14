@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import NodeRSA from 'node-rsa';
-import {config} from '../config/config.ts';
+import {config} from '../config/config';
 import os from "node:os";
 
 const secretKey = config.JWT_SECRET;

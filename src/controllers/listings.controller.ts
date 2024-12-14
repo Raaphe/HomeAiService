@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import CreateListingDTO from "../payloads/dto/createListing.dto.ts";
-import ListingService from "../services/listing.service.ts";
+import CreateListingDTO from "../payloads/dto/createListing.dto";
+import ListingService from "../services/listing.service";
 
 export class ListingsController {
     static async CreateListing(req: Request, res: Response): Promise<Response> {

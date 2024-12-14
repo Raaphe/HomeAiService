@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { IUser } from '../interfaces/user.interface.ts';
-import { IProperty } from "../interfaces/listing.interface.ts";
-import { Price } from "../payloads/dto/listing.dto.ts";
+import { IUser } from '../interfaces/user.interface';
+import { IProperty } from "../interfaces/listing.interface";
+import { Price } from "../payloads/dto/listing.dto";
 
 const priceSchema = new mongoose.Schema<Price>({
   USD: { type: Number, min: 0 },

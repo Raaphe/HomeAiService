@@ -1,6 +1,6 @@
-import ResponseObject from "../interfaces/response.interface.ts";
-import { IUser } from "../interfaces/user.interface.ts";
-import User from "../models/user.model.ts";
+import ResponseObject from "../interfaces/response.interface";
+import { IUser } from "../interfaces/user.interface";
+import User from "../models/user.model";
 
 export class UserService {
     static async getAllUsers(): Promise<ResponseObject<IUser[] | null>> {

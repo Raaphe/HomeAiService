@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { config } from '../config/config.ts';
-import { loggerUtil } from '../utils/logger.util.ts';
+import { config } from '../config/config';
+import { loggerUtil } from '../utils/logger.util';
 
 export default class AuthenticationFilter {
 

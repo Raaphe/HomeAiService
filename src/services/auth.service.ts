@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
-import RegistrationDTO from '../payloads/dto/register.dto.ts';
-import LoginDTO from '../payloads/dto/login.dto.ts';
-import { verifyPassword } from '../utils/security.util.ts';
-import { config } from "../config/config.ts"
-import { loggerUtil } from '../utils/logger.util.ts';
-import ResponseObject from '../interfaces/response.interface.ts';
-import User from '../models/user.model.ts';
+import RegistrationDTO from '../payloads/dto/register.dto';
+import LoginDTO from '../payloads/dto/login.dto';
+import { verifyPassword } from '../utils/security.util';
+import { config } from "../config/config"
+import { loggerUtil } from '../utils/logger.util';
+import ResponseObject from '../interfaces/response.interface';
+import User from '../models/user.model';
 import mongoose from 'mongoose';
-import Role from '../models/roles.enum.ts';
-import { UserService } from './users.service.ts';
+import Role from '../models/roles.enum';
+import { UserService } from './users.service';
 import bcrypt from "bcryptjs";
 
 export class AuthService {

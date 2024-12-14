@@ -1,4 +1,4 @@
-import {IProperty} from "./listing.interface.ts";
+import {IProperty} from "./listing.interface";
 
 export interface IUser {
   _id: string;

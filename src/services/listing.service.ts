@@ -1,9 +1,9 @@
-import ResponseObject from "../interfaces/response.interface.ts";
-import User from "../models/user.model.ts";
-import {ListingDetailed} from "../payloads/dto/listing.dto.ts";
-import CreateListingDTO from "../payloads/dto/createListing.dto.ts";
-import {UserService} from "./users.service.ts"
-import {IUser} from "../interfaces/user.interface.ts";
+import ResponseObject from "../interfaces/response.interface";
+import User from "../models/user.model";
+import {ListingDetailed} from "../payloads/dto/listing.dto";
+import CreateListingDTO from "../payloads/dto/createListing.dto";
+import {UserService} from "./users.service"
+import {IUser} from "../interfaces/user.interface";
 
 export default class ListingService {
 

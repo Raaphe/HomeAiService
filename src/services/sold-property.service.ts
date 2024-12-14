@@ -1,6 +1,6 @@
 import fs from 'fs';
 import csv from 'csv-parser';
-import { ISoldProperty } from "../interfaces/sold_property.interface.ts";
+import { ISoldProperty } from "../interfaces/sold_property.interface";
 import path from "path";
 
 export class SoldPropertyService {

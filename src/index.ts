@@ -1,13 +1,13 @@
-import app, { api_prefix_v1 } from './app.ts';
+import app, { api_prefix_v1 } from './app';
 import 'dotenv/config';
 import mongoose, { connect, ConnectOptions } from 'mongoose';
-import { config } from "./config/config.ts";
-import { loggerUtil } from './utils/logger.util.ts';
+import { config } from "./config/config";
+import { loggerUtil } from './utils/logger.util';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
-import Inference from "./inference/inference.ts"
-import { getLocalIPAddres } from "./utils/security.util.ts";
+import Inference from "./inference/inference"
+import { getLocalIPAddres } from "./utils/security.util";
 
 const IP_ADDR = getLocalIPAddres();
 const port = config.PORT || 3000;
@@ -55,9 +55,9 @@ if (config.ENV === "production") {
     cert: fs.readFileSync(path.resolve(config.CERT_CERT ?? "")),
   };
   
-  https.createServer(httpsOptions, app).listen(port, async () => {
+  https.createServer(httpsOptions, app).listen(Number(port), "0.0.0.0", undefined, async () => {
     console.log(`Server is running on https://${IP_ADDR}:${port}`);
-    console.log(`API docs are running on: https://${IP_ADDR}:3000${api_prefix_v1}/docs`)
+    console.log(`API docs are running on: https://10.0.0.37:3000${api_prefix_v1}/docs`)
     Inference.GetInferenceSession();
   });
 }
