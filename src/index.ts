@@ -3,18 +3,20 @@ import 'dotenv/config';
 import mongoose, { connect, ConnectOptions } from 'mongoose';
 import { config } from "./config/config";
 import { loggerUtil } from './utils/logger.util';
-import https from 'https';
-import fs from 'fs';
-import path from 'path';
 import Inference from "./inference/inference"
-import { getLocalIPAddres } from "./utils/security.util";
 
-const IP_ADDR = getLocalIPAddres();
-const port = process.env.PORT || 3000;
 const CLUSTER_URL = config.CLUSTER_URL || "";
 const CLUSTER_URL_TEST = config.CLUSTER_URL_TEST || "";
 const TEST_DB_NAME = config.TEST_DB_NAME;
 const DB_NAME = config.DB_NAME;
+
+app.listen("0.0.0.0", async () => {
+  console.log(`Server is running on https://homeaiservice.onrender.com`);
+  console.log(`API docs are running on: https://homeaiservice.onrender.com${api_prefix_v1}/docs`);
+  Inference.GetInferenceSession();
+});
+
+
 
 const run = async () => {
   let connectOptions: ConnectOptions;
@@ -43,9 +45,3 @@ db.on("error", console.error.bind(console, "Connection error to mongo db"));
 db.once('open', () => {
   console.log('=== Connected to MongoDb Collection ===');
 });
-app.listen(Number(port), "0.0.0.0", async () => {
-  console.log(`Server is running on https://${IP_ADDR}:${port}`);
-  console.log(`API docs are running on: https://${IP_ADDR}:${port}${api_prefix_v1}/docs`);
-  Inference.GetInferenceSession();
-});
-
