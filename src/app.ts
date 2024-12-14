@@ -93,9 +93,6 @@ const swaggerOptions = {
   apis: [path.join(__dirname, './routes/*.js')],
 };
 
-console.log("=============== HERE")
-console.log([path.join(__dirname, './routes/*.ts')])
-
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
 
