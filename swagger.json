@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://10.0.0.37:3000/api/v1",
+      "url": "https://homeaiservice.onrender.com/api/v1",
       "description": "Development server (HTTP) for v1"
     }
   ],
