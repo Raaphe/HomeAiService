@@ -46,15 +46,20 @@ export function decryptWithPrivateKey(key: NodeRSA, encryptedData: string) {
   return key.decrypt(encryptedData, 'utf8');
 }
 
-export function getLocalIPAddres(): string {
+
+export function getLocalIPAddres() {
     const networkInterfaces = os.networkInterfaces();
-    for (const interfaceName in networkInterfaces) {
-        const addresses = networkInterfaces[interfaceName];
-        for (const address of addresses ?? []) {
-            if (address.family === 'IPv4' && !address.internal) {
-                return address.address;
+    for (const iface of Object.values(networkInterfaces)) {
+
+        if (!iface) {
+            return "127.0.0.1";
+        }
+
+        for (const info of iface) {
+            if (info.family === 'IPv4' && !info.internal) {
+                return info.address;
             }
         }
     }
-    return 'IP address not found';
+    return '127.0.0.1';
 }

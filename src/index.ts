@@ -10,7 +10,7 @@ import Inference from "./inference/inference"
 import { getLocalIPAddres } from "./utils/security.util";
 
 const IP_ADDR = getLocalIPAddres();
-const port = config.PORT || 3000;
+const port = process.env.PORT || 3000;
 const CLUSTER_URL = config.CLUSTER_URL || "";
 const CLUSTER_URL_TEST = config.CLUSTER_URL_TEST || "";
 const TEST_DB_NAME = config.TEST_DB_NAME;
@@ -45,19 +45,22 @@ db.once('open', () => {
 });
 
 if (config.ENV === "production") {
+  // For Render, HTTPS is automatically handled, so use HTTP.
   app.listen(port, () => {
     console.log(`Server is running on http://0.0.0.0:${port}`);
+    console.log(`API docs are running on: http://0.0.0.0:${port}${api_prefix_v1}/docs`);
     Inference.GetInferenceSession();
   });
 } else {
+  // In non-production environments, you can still handle HTTPS yourself if needed
   const httpsOptions: https.ServerOptions = {
     key: fs.readFileSync(path.resolve(config.CERT_KEY ?? "")),
     cert: fs.readFileSync(path.resolve(config.CERT_CERT ?? "")),
   };
-  
+
   https.createServer(httpsOptions, app).listen(Number(port), "0.0.0.0", undefined, async () => {
     console.log(`Server is running on https://${IP_ADDR}:${port}`);
-    console.log(`API docs are running on: https://10.0.0.37:3000${api_prefix_v1}/docs`)
+    console.log(`API docs are running on: https://${IP_ADDR}:${port}${api_prefix_v1}/docs`);
     Inference.GetInferenceSession();
   });
 }
