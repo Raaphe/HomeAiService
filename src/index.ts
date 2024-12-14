@@ -46,7 +46,7 @@ db.once('open', () => {
 
 if (config.ENV === "production") {
   // For Render, HTTPS is automatically handled, so use HTTP.
-  app.listen(port, () => {
+  app.listen(Number(port), "0.0.0.0", async () => {
     console.log(`Server is running on http://0.0.0.0:${port}`);
     console.log(`API docs are running on: http://0.0.0.0:${port}${api_prefix_v1}/docs`);
     Inference.GetInferenceSession();
