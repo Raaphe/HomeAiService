@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --max-old-space-size=512 dist/index.js",
     "build": "tsc",
-    "postbuild": "node copy-assets.util.js",
+    "postbuild": "",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
     "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client",
