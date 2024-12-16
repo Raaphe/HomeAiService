@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:10000/api/v1",
+      "url": "https://homeaiservice.onrender.com/api/v1/",
       "description": "Development server (HTTP) for v1"
     }
   ],
