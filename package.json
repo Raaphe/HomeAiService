@@ -22,7 +22,6 @@
     "@types/unzipper": "^0.10.10",
     "axios": "^1.7.8",
     "bcryptjs": "^2.4.3",
-    "bull": "^4.16.4",
     "chai-http": "^5.1.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

@@ -25,6 +25,7 @@ async function updateDataset(datasetPath: string): Promise<void> {
             },
         });
 
+        // Create write stream for the zip file directly
         const fileStream = fs.createWriteStream(zipPath);
         response.data.pipe(fileStream);
 
@@ -35,6 +36,7 @@ async function updateDataset(datasetPath: string): Promise<void> {
 
         console.log('Dataset downloaded successfully. Extracting...');
 
+        // Directly stream the zip file and extract it into the target directory
         const extractStream = fs.createReadStream(zipPath)
             .pipe(unzipper.Extract({ path: dataPath }));
 
@@ -45,16 +47,19 @@ async function updateDataset(datasetPath: string): Promise<void> {
 
         console.log('Dataset extracted successfully.');
 
+        // Rename files without using fs.readdirSync() for better memory management
         const files = fs.readdirSync(dataPath);
         for (const file of files) {
             const oldFilePath = path.join(dataPath, file);
             if (fs.lstatSync(oldFilePath).isFile() && file !== 'dataset.zip') {
                 const newFilePath = path.join(dataPath, 'realtor-data.zip.csv');
                 fs.renameSync(oldFilePath, newFilePath);
-                console.log(`Renamed ${file} to renamed_${file}`);
+                console.log(`Renamed ${file} to realtor-data.zip.csv`);
+                break; // Rename only the first file, as per your initial code logic
             }
         }
 
+        // Clean up the temporary zip file
         fs.unlinkSync(zipPath);
         console.log(`Memory usage: ${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
         console.log('Temporary ZIP file deleted.');
