@@ -1,3 +1,4 @@
+import Queue from "bull"
 import express, { Request, Response } from 'express';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
@@ -21,12 +22,18 @@ export const api_prefix_v1 = `/api/v${version1}`;
 
 export const soldPropertyService = new SoldPropertyService();
 
+/// DOWNLOADING DATASET + GRAPHS [START]
+
+const datasetQueue = new Queue('dataset-processing');
+
 async function updateAndWriteGraphFunctions(): Promise<void> {
   try {
-    await runDatasetUpdate();
-
-    await soldPropertyService.loadProperties(config.DATASET_PATH);
-    await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+      await runDatasetUpdate();
+      await sleep(5);
+      await soldPropertyService.loadProperties(config.DATASET_PATH);
+      await sleep(5);
+      await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+      await sleep(5);
 
     console.log('Graph functions have been written successfully.');
   } catch (err) {
@@ -47,6 +54,8 @@ fileUtil.checkFileExists(config.DATASET_PATH)
     .catch((err) => {
       console.error('Error checking if file exists:', err);
 });
+
+/// DOWNLOADING DATASET + GRAPHS [END]
 
 const app = express();
 
@@ -95,18 +104,23 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
 
+const filter = new AuthenticationFilter();
+
 app.use(`${api_prefix_v1}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(api_prefix_v1, realtorRoute);
 app.use(api_prefix_v1, listingRoute);
 app.use(api_prefix_v1, soldPropertyRoute);
+app.use(api_prefix_v1, authRoute);
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to my Backend</h1>');
 });
 
-const filter = new AuthenticationFilter();
 
-app.use(api_prefix_v1, authRoute);
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export default app;
