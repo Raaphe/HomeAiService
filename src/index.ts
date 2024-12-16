@@ -19,8 +19,8 @@ const PORT = process.env.PORT || 10000;
 async function updateAndWriteGraphFunctions(): Promise<void> {
   try {
     await runDatasetUpdate();
-    // await soldPropertyService.loadProperties(config.DATASET_PATH);
-    // await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+    await soldPropertyService.loadProperties(config.DATASET_PATH);
+    await soldPropertyService.writeGraphFunctionsToFile('dist/data/graph-data.json');
 
     console.log('Graph functions have been written successfully.');
   } catch (err) {
@@ -47,8 +47,8 @@ fileUtil.checkFileExists(config.DATASET_PATH)
 
 app.listen(Number(PORT), "0.0.0.0", async () => {
   if (config.ENV === "test") {
-    console.log(`Server is running on http://127.0.0.1/`);
-    console.log(`API docs are running on: http://127.0.0.1${api_prefix_v1}/docs`);
+    console.log(`Server is running on http://127.0.0.1:${PORT}/`);
+    console.log(`API docs are running on: http://127.0.0.1:${PORT}${api_prefix_v1}/docs`);
   } else {
     console.log(`Server is running on https://homeaiservice.onrender.com`);
     console.log(`API docs are running on: https://homeaiservice.onrender.com${api_prefix_v1}/docs`);

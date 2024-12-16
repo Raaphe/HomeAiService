@@ -12,13 +12,14 @@ import soldPropertyRoute from "./routes/sold-property.route";
 import fs from "fs";
 import cors from "cors";
 import {loggingMiddleware} from "./middlewares/logging.middleware";
+import {config} from "./config/config";
+import userRoute from "./routes/user.route";
+
 const version1 = 1;
-export const api_prefix_v1 = `/api/v${version1}`;
-
-export const soldPropertyService = new SoldPropertyService();
-
-
 const app = express();
+const PORT = process.env.PORT || 10000;
+export const soldPropertyService = new SoldPropertyService();
+export const api_prefix_v1 = `/api/v${version1}`;
 
 app.use(express.json());
 app.use(errorMiddleware);
@@ -39,7 +40,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `https://homeaiservice.onrender.com/api/v1`,
+        url: `http${config.ENV !== "test" ? 's' : ''}://${config.ENV !== "test" ? "homeaiservice.onrender.com" : `localhost:${PORT}`}${api_prefix_v1}`,
         description: 'Development server (HTTP) for v1',
       },
     ],
@@ -70,6 +71,7 @@ const filter = new AuthenticationFilter();
 app.use(`${api_prefix_v1}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(api_prefix_v1, realtorRoute);
+app.use(api_prefix_v1, userRoute);
 app.use(api_prefix_v1, listingRoute);
 app.use(api_prefix_v1, soldPropertyRoute);
 app.use(api_prefix_v1, authRoute);

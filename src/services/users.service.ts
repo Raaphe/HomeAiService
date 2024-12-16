@@ -1,6 +1,8 @@
 import ResponseObject from "../interfaces/response.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
+import jwt from "jsonwebtoken";
+import {config} from "../config/config";
 
 export class UserService {
     static async getAllUsers(): Promise<ResponseObject<IUser[] | null>> {
@@ -16,6 +18,35 @@ export class UserService {
                 code: 500,
                 message: "Error getting users.",
                 data: null
+            };
+        }
+    }
+
+    static async getUserFromJWT(token: string): Promise<ResponseObject<IUser | null>> {
+        try {
+            const decoded: any = jwt.verify(token, config.JWT_SECRET);
+            let user = await this.getUserByEmail(decoded.username);
+
+            if (!user || !user.data) {
+                return {
+                    code: 404,
+                    data: null,
+                    message: "User not found"
+                };
+            }
+
+            return {
+                code: 200,
+                data: user.data,
+                message: "Fetched user successfully"
+            };
+
+        } catch (error: any) {
+            console.log(error.message);
+            return {
+                code: 200,
+                data: null,
+                message: "Fetched user successfully"
             };
         }
     }

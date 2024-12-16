@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "node --max-old-space-size=256 dist/index.js",
-    "build": "tsc",
+    "dev": "node --max-old-space-size=500 dist/index.js",
+    "build": "npm run generate-schema && tsc",
     "postbuild": "",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
