@@ -3,7 +3,7 @@ name: Generate Client Code
 on:
   push:
     branches:
-      - "develop"
+      - "main"
 
 jobs:
   generate-client-code:
