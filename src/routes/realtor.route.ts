@@ -44,46 +44,7 @@ const realtorController = new RealtorController();
  *                 listings:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         example: "1"
- *                       address:
- *                         type: string
- *                         example: "123 Main St"
- *                       city:
- *                         type: string
- *                         example: "Anytown"
- *                       state:
- *                         type: string
- *                         example: "CA"
- *                       zip_code:
- *                         type: string
- *                         example: "12345"
- *                       property_type:
- *                         type: string
- *                         example: "House"
- *                       bedrooms:
- *                         type: integer
- *                         example: 3
- *                       bathrooms:
- *                         type: integer
- *                         example: 2
- *                       building_size:
- *                         type: integer
- *                         example: 1500
- *                       prices:
- *                         type: object
- *                         additionalProperties:
- *                           type: integer
- *                         example: { "rent": 2000, "sale": 300000 }
- *                       image:
- *                         type: string
- *                         example: "http://example.com/image.jpg"
- *                       url:
- *                         type: string
- *                         example: "http://example.com/listing/1"
+ *                      $ref: "#/components/schemas/ListingDetailed"
  *       400:
  *         description: Invalid zip_code or number_of_listings provided.
  *       404:
@@ -113,22 +74,7 @@ router.post('/listings/available/:zip_code', realtorController.getProperties);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   description: Unique identifier of the listing.
- *                 title:
- *                   type: string
- *                   description: Title or name of the property listing.
- *                 price:
- *                   type: number
- *                   description: Price of the property.
- *                 location:
- *                   type: string
- *                   description: Location of the property.
- *                 [other_properties]:
- *                   description: Other relevant fields of the ListingDetailed object.
+ *               $ref: "#/components/schemas/ListingDetailed"
  *       400:
  *         description: Missing or invalid `listingUrl` query parameter.
  *         content:
@@ -160,6 +106,6 @@ router.post('/listings/available/:zip_code', realtorController.getProperties);
  *                   type: string
  *                   example: Failed to fetch property details. Please try again later.
  */
-router.get('/listings/available/', realtorController.getPropertyDetails);
+router.get('/listings/available', realtorController.getPropertyDetails);
 
 export default router;

@@ -1,4 +1,5 @@
-import { ListingDetailed, ListingOverview } from "../payloads/dto/listing.dto";
+import { ListingOverview } from "../payloads/dto/listing.dto";
+import  ListingDetailed from "../payloads/dto/listingDetailed.dto";
 import axios from "axios";
 import ListingService from "../services/listing.service";
 import InferenceService from "../services/inference.service";
@@ -21,82 +22,74 @@ class RealtorApi {
     }
 
     static async fetchPropertiesList(zipCode: string, number_of_listings: number = 25) {
-        const url = this.getUrl('propertyListings', { zip_code: zipCode, number_of_listings: number_of_listings });
-        let response;
+        const url = this.getUrl('propertyListings', { zip_code: zipCode, number_of_listings });
+        let apiListings: ListingOverview[] = [];
+        let mongooseListings: ListingOverview[] = [];
 
         try {
             // Attempt to fetch listings from the API
-            response = await axios.get<{
+            const response = await axios.get<{
                 listings?: ListingOverview[];
-                total_number_of_listings?: number;
             }>(url);
+
+            apiListings = response.data.listings || [];
         } catch (error) {
-            // Handle API fetch errors gracefully
             console.error('Error fetching from API:', error);
-            response = null;  // Set response to null if the API call fails
         }
 
         try {
-            // If API response is not available or there are no listings, only return Mongoose listings if available
-            if (!response || !response.data.listings) {
-                console.log('API call failed or no listings found, returning MongoDB listings if available.');
-                let mongooseListingRes = await ListingService.getAllListings();
-                let mongooseListings = mongooseListingRes.data?.filter(l => l.zip_code === zipCode) ?? [];
+            // Fetch listings from MongoDB
+            const mongooseListingRes = await ListingService.getAllListings();
+            mongooseListings = mongooseListingRes.data?.filter(l => l.zip_code === zipCode) || [];
+        } catch (error) {
+            console.error('Error fetching from MongoDB:', error);
+        }
 
-                // Return only MongoDB listings if any exist
-                if (mongooseListings.length > 0) {
-                    console.log('Returning MongoDB listings:', mongooseListings);
-                    return mongooseListings;
-                } else {
-                    console.log('No listings found in MongoDB either.');
-                    return [];  // Return empty array if no listings are found
+        // Ensure equal number of listings from both sources, or fill from one if the other lacks enough
+        const halfListings = Math.ceil(number_of_listings / 2); // Half the requested listings (round up)
+
+        const apiCount = apiListings.length;
+        const mongooseCount = mongooseListings.length;
+
+        let finalListings: ListingOverview[];
+
+        // Fetch half from each source if both have enough
+        if (apiCount >= halfListings && mongooseCount >= halfListings) {
+            finalListings = [
+                ...apiListings.slice(0, halfListings),
+                ...mongooseListings.slice(0, number_of_listings - halfListings),
+            ];
+        } else {
+            // Calculate the shortfall in one source and compensate with the other
+            const apiToTake = Math.min(apiCount, halfListings);
+            const mongooseToTake = Math.min(mongooseCount, number_of_listings - apiToTake);
+
+            finalListings = [
+                ...apiListings.slice(0, apiToTake),
+                ...mongooseListings.slice(0, mongooseToTake),
+            ];
+
+            // If still short, fill the remainder with the source that has more
+            const remaining = number_of_listings - finalListings.length;
+            if (remaining > 0) {
+                if (apiCount > apiToTake) {
+                    finalListings = [
+                        ...finalListings,
+                        ...apiListings.slice(apiToTake, apiToTake + remaining),
+                    ];
+                } else if (mongooseCount > mongooseToTake) {
+                    finalListings = [
+                        ...finalListings,
+                        ...mongooseListings.slice(mongooseToTake, mongooseToTake + remaining),
+                    ];
                 }
             }
-
-            // Continue if API has listings
-            let mongooseListingRes = await ListingService.getAllListings();
-            let mongooseListings = mongooseListingRes.data?.filter(l => l.zip_code === zipCode) ?? [];
-
-            const mongooseCount = mongooseListings ? mongooseListings.length : 0;
-            const apiCount = response.data.listings.length;
-
-            const halfListings = Math.floor(number_of_listings / 2);
-
-            let finalListings = [];
-            if (mongooseCount >= halfListings && apiCount >= halfListings) {
-                // If both sources have enough listings, fetch half from each
-                finalListings = [
-                    ...mongooseListings.slice(0, halfListings),
-                    ...response.data.listings.slice(0, halfListings)
-                ];
-            } else if (mongooseCount >= halfListings) {
-                // If MongoDB has enough listings, take the remainder from the API
-                finalListings = [
-                    ...mongooseListings.slice(0, halfListings),
-                    ...response.data.listings.slice(0, number_of_listings - halfListings)
-                ];
-            } else if (apiCount >= halfListings) {
-                // If API has enough listings, take the remainder from MongoDB
-                finalListings = [
-                    ...mongooseListings.slice(0, number_of_listings - halfListings),
-                    ...response.data.listings.slice(0, halfListings)
-                ];
-            } else {
-                // If both have fewer listings than expected, merge both sources until reaching the number of listings
-                finalListings = [
-                    ...mongooseListings.slice(0, mongooseCount),
-                    ...response.data.listings.slice(0, number_of_listings - mongooseCount)
-                ];
-            }
-
-            console.log('Fetched Listings:', finalListings);
-            return finalListings;
-
-        } catch (error) {
-            console.error('Error processing property listings:', error);
-            throw new Error('Failed to process property listings.');
         }
+
+        console.log('Final Listings:', finalListings);
+        return finalListings;
     }
+
 
 
     static async fetchPropertyDetails(listingUrl: string) : Promise<ListingDetailed | null> {
