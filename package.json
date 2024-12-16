@@ -5,8 +5,8 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node --max-old-space-size=512 dist/index.js",
-    "build": "tsc && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
-    "postbuild": "node copy-assets.util.js",
+    "build": "tsc && npm install -g typescript-json-schema",
+    "postbuild": "node copy-assets.util.js && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
     "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client"
