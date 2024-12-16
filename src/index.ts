@@ -12,8 +12,13 @@ const DB_NAME = config.DB_NAME;
 const PORT = process.env.PORT || 10000;
 
 app.listen(Number(PORT), "0.0.0.0", async () => {
-  console.log(`Server is running on https://homeaiservice.onrender.com`);
-  console.log(`API docs are running on: https://homeaiservice.onrender.com${api_prefix_v1}/docs`);
+  if (config.ENV === "test") {
+    console.log(`Server is running on http://127.0.0.1/`);
+    console.log(`API docs are running on: http://127.0.0.1${api_prefix_v1}/docs`);
+  } else {
+    console.log(`Server is running on https://homeaiservice.onrender.com`);
+    console.log(`API docs are running on: https://homeaiservice.onrender.com${api_prefix_v1}/docs`);
+  }
   Inference.GetInferenceSession();
 });
 

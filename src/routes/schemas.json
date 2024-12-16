@@ -1,0 +1,379 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "AuthenticationDTO": {
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "CreateListingDTO": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "images": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "land_size": {
+                    "type": "number"
+                },
+                "prices": {
+                    "$ref": "#/definitions/Price"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "HouseDTO": {
+            "properties": {
+                "acres": {
+                    "type": "number"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "living_space_size": {
+                    "type": "number"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "IProperty": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "images": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "land_size": {
+                    "type": "number"
+                },
+                "prices": {
+                    "$ref": "#/definitions/Price"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ISoldProperty": {
+            "properties": {
+                "acre_lot": {
+                    "type": "number"
+                },
+                "bath": {
+                    "type": "number"
+                },
+                "bed": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "house_size": {
+                    "type": "number"
+                },
+                "prev_sold_data": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "number"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "IUser": {
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "company_url": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "listings": {
+                    "items": {
+                        "$ref": "#/definitions/IProperty"
+                    },
+                    "type": "array"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "profile_pic": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ListingDetailed": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "contact": {
+                    "properties": {
+                        "company": {
+                            "type": "string"
+                        },
+                        "company_url": {
+                            "type": "string"
+                        },
+                        "first_name": {
+                            "type": "string"
+                        },
+                        "last_name": {
+                            "type": "string"
+                        },
+                        "phone_number": {
+                            "type": "string"
+                        },
+                        "profile_pic": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        }
+                    },
+                    "type": "object"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "estimated_market_price": {
+                    "type": "number"
+                },
+                "images": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "land_size": {
+                    "type": "number"
+                },
+                "prices": {
+                    "$ref": "#/definitions/Price"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "LoginDTO": {
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Price": {
+            "properties": {
+                "CAD": {
+                    "type": "number"
+                },
+                "EUR": {
+                    "type": "number"
+                },
+                "USD": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "RegistrationDTO": {
+            "properties": {
+                "company_name": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "profile_picture": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ResponseObject": {
+            "properties": {
+                "code": {
+                    "type": "number"
+                },
+                "data": {
+                    "$ref": "#/definitions/T"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Role": {
+            "enum": [
+                "admin",
+                "user",
+                "moderator",
+                "guest"
+            ],
+            "type": "string"
+        },
+        "T": {
+            "type": "object"
+        }
+    }
+}
+

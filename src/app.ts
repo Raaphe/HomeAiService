@@ -74,6 +74,7 @@ const swaggerOptions = {
       },
     ],
     components: {
+      schemas: require('../src/routes/schemas.json').definitions,
       securitySchemes: {
         bearerAuth: {
           type: 'http',

@@ -6,9 +6,9 @@ const userController = new UserController();
 
 /**
  * @swagger
- * /api/v1/users:
+ * /users:
  *   get:
- *     deprecated: true
+ *     tags: [Users]
  *     summary: Retrieve a list of users
  *     security: []
  *     description: Retrieve a list of users from the API. Can be used to populate a list of users in your system.
@@ -20,17 +20,7 @@ const userController = new UserController();
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: John Doe
- *                   mail:
- *                     type: string
- *                     example: john.doe@example.com
+ *                  $ref: "#/components/schemas/IUser"
  *       400:
  *         description: Invalid input, please check the request format.
  *       404:

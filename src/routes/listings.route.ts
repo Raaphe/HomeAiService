@@ -16,69 +16,7 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 description: Email of the user to associate the listing with.
- *                 example: "user@example.com"
- *               zip_code:
- *                 type: string
- *                 description: Zip code of the property.
- *                 example: "12345"
- *               bathrooms:
- *                 type: integer
- *                 description: Number of bathrooms.
- *                 example: 2
- *               land_size:
- *                 type: number
- *                 description: Size of the land in square meters.
- *                 example: 1500
- *               state:
- *                 type: string
- *                 description: State where the property is located.
- *                 example: "California"
- *               city:
- *                 type: string
- *                 description: City where the property is located.
- *                 example: "San Francisco"
- *               building_size:
- *                 type: number
- *                 description: Size of the building in square meters.
- *                 example: 200
- *               property_type:
- *                 type: string
- *                 description: Type of the property.
- *                 example: "Apartment"
- *               address:
- *                 type: string
- *                 description: Address of the property.
- *                 example: "123 Main St"
- *               property_id:
- *                 type: string
- *                 description: Unique identifier for the property.
- *                 example: "PROP123"
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *                   example: "https://example.com/image.jpg"
- *               bedrooms:
- *                 type: integer
- *                 description: Number of bedrooms.
- *                 example: 3
- *               url:
- *                 type: string
- *                 description: URL of the property listing.
- *                 example: "https://example.com/listing"
- *               description:
- *                 type: string
- *                 description: Description of the property.
- *                 example: "Beautiful apartment with sea view."
- *               prices:
- *                 type: object
- *                 description: Pricing information for the property.
- *                 example: { "USD": 176000, "CAD": 250000 }
+ *              $ref: "#/components/schemas/CreateListingDTO"
  *     responses:
  *       "201":
  *         description: Listing created successfully.
@@ -130,5 +68,264 @@ const router = Router();
  *                   example: false
  */
 router.post("/listing", ListingsController.CreateListing)
+
+
+/**
+ * @swagger
+ * /listings:
+ *   get:
+ *     tags:
+ *       - Listings
+ *     summary: Retrieve all listings
+ *     description: Fetches all the property listings from the system.
+ *     responses:
+ *       "200":
+ *         description: Listings fetched successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Successfully fetched listings"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                      $ref: "#/components/schemas/ListingDetailed"
+ *       "500":
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching listings."
+ *                 data:
+ *                   type: null
+ */
+router.get("/listings", ListingsController.GetAllListings);
+
+/**
+ * @swagger
+ * /listing/{id}:
+ *   get:
+ *     tags:
+ *       - Listings
+ *     summary: Get a specific listing by ID
+ *     description: Retrieves a specific property listing using its unique identifier.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier for the listing.
+ *     responses:
+ *       "200":
+ *         description: Listing retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Listing fetched successfully"
+ *                 data:
+ *                   $ref: "#/components/schemas/ListingDetailed"
+ *       "404":
+ *         description: Listing not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "No listing found."
+ *                 data:
+ *                   type: object
+ *                   example: {}
+ *       "500":
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching listing."
+ *                 data:
+ *                   type: null
+ */
+router.get("/listing/:id", ListingsController.GetListingById);
+
+/**
+ * @swagger
+ * /listing:
+ *   put:
+ *     tags:
+ *       - Listings
+ *     summary: Edit an existing listing
+ *     description: Updates an existing property listing with the provided details.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *              $ref: "#/components/schemas/CreateListingDTO"
+ *     responses:
+ *       "200":
+ *         description: Listing updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Listing edited successfully"
+ *                 data:
+ *                   type: boolean
+ *                   example: true
+ *       "404":
+ *         description: Listing or user not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "Error editing listing, provided email does not exist or user has no listings."
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ *       "500":
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "Error editing listing."
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ */
+router.put("/listing", ListingsController.UpdateListing);
+
+/**
+ * @swagger
+ * /listing/{id}:
+ *   delete:
+ *     tags:
+ *       - Listings
+ *     summary: Delete a listing by its ID
+ *     description: Deletes a specific listing from the database using the provided listing ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the listing to be deleted.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Listing successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Listing deleted successfully"
+ *                 data:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Invalid listing ID or bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: "Listing ID is required"
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ *       404:
+ *         description: Listing not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: "Listing not found"
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 500
+ *                 message:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ *                 data:
+ *                   type: boolean
+ *                   example: false
+ */
+router.delete("/listing/:id", ListingsController.DeleteListing);
 
 export default router;

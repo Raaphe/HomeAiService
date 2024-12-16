@@ -5,7 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node --max-old-space-size=512 dist/index.js",
-    "build": "tsc",
+    "build": "tsc && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
     "postbuild": "node copy-assets.util.js",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
