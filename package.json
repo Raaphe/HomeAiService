@@ -5,12 +5,11 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node --max-old-space-size=512 dist/index.js",
-    "build": "tsc && wait-script && npm install -g typescript-json-schema && wait-script",
-    "postbuild": "wait-script && node copy-assets.util.js && wait-script && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
+    "build": "tsc && wait-on ./dist/index.js && npm install -g typescript-json-schema",
+    "postbuild": "wait-on ./dist/index.js && node copy-assets.util.js && wait-on ./dist/index.js && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
-    "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client",
-    "wait-script": "sleep 5"
+    "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client"
   },
   "keywords": [],
   "author": "",
@@ -76,6 +75,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wait-on": "^8.0.1"
   }
 }
