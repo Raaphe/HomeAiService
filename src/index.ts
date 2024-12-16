@@ -19,8 +19,8 @@ const PORT = process.env.PORT || 10000;
 async function updateAndWriteGraphFunctions(): Promise<void> {
   try {
     await runDatasetUpdate();
-    await soldPropertyService.loadProperties(config.DATASET_PATH);
-    await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
+    // await soldPropertyService.loadProperties(config.DATASET_PATH);
+    // await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
 
     console.log('Graph functions have been written successfully.');
   } catch (err) {
