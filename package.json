@@ -5,11 +5,12 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node --max-old-space-size=512 dist/index.js",
-    "build": "tsc && wait-on ./dist/index.js && npm install -g typescript-json-schema",
-    "postbuild": "wait-on ./dist/index.js && node copy-assets.util.js && wait-on ./dist/index.js && typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\"",
+    "build": "tsc",
+    "postbuild": "node copy-assets.util.js",
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
-    "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client"
+    "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client",
+    "generate-schema": "typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\""
   },
   "keywords": [],
   "author": "",
@@ -43,6 +44,7 @@
     "sinon": "^19.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "typescript-json-schema": "^0.65.1",
     "unzipper": "^0.12.3",
     "winston": "^3.14.2"
   },
