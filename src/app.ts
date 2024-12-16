@@ -29,11 +29,8 @@ const datasetQueue = new Queue('dataset-processing');
 async function updateAndWriteGraphFunctions(): Promise<void> {
   try {
       await runDatasetUpdate();
-      await sleep(5);
       await soldPropertyService.loadProperties(config.DATASET_PATH);
-      await sleep(5);
       await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
-      await sleep(5);
 
     console.log('Graph functions have been written successfully.');
   } catch (err) {
@@ -113,14 +110,8 @@ app.use(api_prefix_v1, listingRoute);
 app.use(api_prefix_v1, soldPropertyRoute);
 app.use(api_prefix_v1, authRoute);
 
-
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Welcome to my Backend</h1>');
 });
-
-
-function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 export default app;
