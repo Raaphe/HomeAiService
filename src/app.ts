@@ -1,4 +1,3 @@
-import Queue from "bull"
 import express, { Request, Response } from 'express';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
@@ -23,8 +22,6 @@ export const api_prefix_v1 = `/api/v${version1}`;
 export const soldPropertyService = new SoldPropertyService();
 
 /// DOWNLOADING DATASET + GRAPHS [START]
-
-const datasetQueue = new Queue('dataset-processing');
 
 async function updateAndWriteGraphFunctions(): Promise<void> {
   try {
