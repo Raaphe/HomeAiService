@@ -25,20 +25,22 @@ async function updateDataset(datasetPath: string): Promise<void> {
             },
         });
 
+        const fileStream = fs.createWriteStream(zipPath);
+        response.data.pipe(fileStream);
+
         await new Promise<void>((resolve, reject) => {
-            const fileStream = fs.createWriteStream(zipPath);
-            response.data.pipe(fileStream);
             fileStream.on('finish', resolve);
             fileStream.on('error', reject);
         });
 
         console.log('Dataset downloaded successfully. Extracting...');
 
+        const extractStream = fs.createReadStream(zipPath)
+            .pipe(unzipper.Extract({ path: dataPath }));
+
         await new Promise<void>((resolve, reject) => {
-            fs.createReadStream(zipPath)
-                .pipe(unzipper.Extract({ path: dataPath }))
-                .on('close', resolve)
-                .on('error', reject);
+            extractStream.on('close', resolve);
+            extractStream.on('error', reject);
         });
 
         console.log('Dataset extracted successfully.');
@@ -47,13 +49,14 @@ async function updateDataset(datasetPath: string): Promise<void> {
         for (const file of files) {
             const oldFilePath = path.join(dataPath, file);
             if (fs.lstatSync(oldFilePath).isFile() && file !== 'dataset.zip') {
-                const newFilePath = path.join(dataPath, `realtor-data.zip.csv`);
+                const newFilePath = path.join(dataPath, 'realtor-data.zip.csv');
                 fs.renameSync(oldFilePath, newFilePath);
                 console.log(`Renamed ${file} to renamed_${file}`);
             }
         }
 
         fs.unlinkSync(zipPath);
+        console.log(`Memory usage: ${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
         console.log('Temporary ZIP file deleted.');
     } catch (error) {
         console.error(`Error during dataset update: ${(error as Error).message}`);
