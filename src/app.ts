@@ -7,11 +7,7 @@ import AuthenticationFilter from './middlewares/auth.middleware';
 import authRoute from './routes/auth.route';
 import listingRoute from "./routes/listings.route"
 import realtorRoute from './routes/realtor.route';
-import cron from 'node-cron';
-import { runDatasetUpdate } from './utils/update_dataset.util';
 import { SoldPropertyService } from './services/sold-property.service';
-import { config } from './config/config';
-import fileUtil from './utils/file.util';
 import soldPropertyRoute from "./routes/sold-property.route";
 import fs from "fs";
 import cors from "cors";
@@ -21,35 +17,6 @@ export const api_prefix_v1 = `/api/v${version1}`;
 
 export const soldPropertyService = new SoldPropertyService();
 
-/// DOWNLOADING DATASET + GRAPHS [START]
-
-async function updateAndWriteGraphFunctions(): Promise<void> {
-  try {
-      await runDatasetUpdate();
-      await soldPropertyService.loadProperties(config.DATASET_PATH);
-      await soldPropertyService.writeGraphFunctionsToFile('../data/graph-data.json');
-
-    console.log('Graph functions have been written successfully.');
-  } catch (err) {
-    console.error('Error in the dataset update or graph function write:', err);
-  }
-}
-
-cron.schedule('0 3 * * 6', async () => {
-  await updateAndWriteGraphFunctions();
-});
-
-fileUtil.checkFileExists(config.DATASET_PATH)
-    .then(async (doesFileExist) => {
-      if (!doesFileExist) {
-        await updateAndWriteGraphFunctions();
-      }
-    })
-    .catch((err) => {
-      console.error('Error checking if file exists:', err);
-});
-
-/// DOWNLOADING DATASET + GRAPHS [END]
 
 const app = express();
 

@@ -8,7 +8,7 @@ export default class Inference {
     public hasLoaded = false;
     public inferenceSession: InferenceSession | undefined;
 
-    private modelName: string = path.resolve(__dirname, `${config.MODEL_NAME}.onnx`);
+    private modelName: string = path.resolve(`./src/inference/${config.MODEL_NAME}.onnx`);
 
     private static instance: Inference;
      
