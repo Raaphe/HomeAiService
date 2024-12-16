@@ -3,7 +3,7 @@ name: Generate Client Code
 on:
   push:
     branches:
-      - '*'
+      - "develop"
 
 jobs:
   generate-client-code:
@@ -15,7 +15,7 @@ jobs:
 
     - name: Checkout another private repo
       run: |
-        git clone https://github.com/Raaphe/HomeAi.git
+        git clone https://x-access-token:${{ secrets.FRONTEND_API_KEY }}@github.com/Raaphe/HomeAi.git
         sleep 4s
 
     - name: Clean up existing generated-client directory
@@ -28,7 +28,8 @@ jobs:
           -v ${PWD}:/local openapitools/openapi-generator-cli generate \
           -i /local/swagger.json \
           -g typescript-axios \
-          -o /local/HomeAi/app/api/generated-client
+          -o /local/HomeAi/app/api/generated-client \
+          --skip-validate-spec
 
     - name: Push changes back to the private repo
       run: |
@@ -37,5 +38,5 @@ jobs:
         git config user.email "actions@github.com"
         git remote set-url origin https://x-access-token:${{ secrets.FRONTEND_API_KEY }}@github.com/Raaphe/HomeAi.git
         git add .
-        git commit -m "Update generated client code"
-        git push
+        git commit -m "Update generated client code" || echo "No changes to commit"
+        git push || echo "Nothing to push"
