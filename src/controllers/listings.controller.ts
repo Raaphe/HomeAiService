@@ -58,10 +58,9 @@ export class ListingsController {
 
     static async UpdateListing(req: Request, res: Response): Promise<Response> {
         try {
-            const listingId = req.params.id;
             const dto: CreateListingDTO = req.body;
 
-            if (!listingId) {
+            if (!req.body.property_id) {
                 return res.status(400).json({
                     code: 400,
                     message: "Listing ID is required",

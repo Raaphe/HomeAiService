@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
-import { IUser } from '../interfaces/user.interface';
-import { IProperty } from "../interfaces/listing.interface";
-import { Price } from "../payloads/dto/listing.dto";
+import IUser  from '../interfaces/user.interface';
+import Price from "../payloads/dto/Price.dto";
+import IProperty from "../interfaces/listing.interface";
+
 
 const priceSchema = new mongoose.Schema<Price>({
   USD: { type: Number, min: 0 },
@@ -27,11 +28,10 @@ const propertySchema = new mongoose.Schema<IProperty>({
 }, { _id: false });
 
 const userSchema = new mongoose.Schema<IUser>({
-  _id: { type: String, required: true },
   email: { type: String, unique: true, required: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+  userName: { type: String, maxlength: 50 },
   password: { type: String, required: true, minlength: 8 },
   role: { type: String, required: true, enum: ['admin', 'user', 'guest'] }, // REQUIRED END
-  userName: { type: String, maxlength: 50, unique: true },
   company: { type: String, maxlength: 100 },
   company_url: { type: String, match: /^https?:\/\/[^\s$.?#].\S*$/i },
   first_name: { type: String, maxlength: 50 },

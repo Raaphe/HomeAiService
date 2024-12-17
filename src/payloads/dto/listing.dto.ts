@@ -1,10 +1,6 @@
-export interface Price {
-    USD?: number;
-    CAD?: number;
-    EUR?: number;
-}
+import Price from "./Price.dto";
 
-export interface ListingBase {
+export default interface ListingBase {
     property_id?: string;
     address?: string;
     city?: string;
@@ -18,6 +14,3 @@ export interface ListingBase {
     url?: string;
 }
 
-export interface ListingOverview extends ListingBase {
-    image?: string;
-}

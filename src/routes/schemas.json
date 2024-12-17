@@ -45,7 +45,7 @@
                     "type": "number"
                 },
                 "prices": {
-                    "$ref": "#/definitions/Price"
+                    "$ref": "#/definitions/default_1"
                 },
                 "property_id": {
                     "type": "string"
@@ -118,7 +118,7 @@
                     "type": "number"
                 },
                 "prices": {
-                    "$ref": "#/definitions/Price"
+                    "$ref": "#/definitions/default_1"
                 },
                 "property_id": {
                     "type": "string"
@@ -176,9 +176,6 @@
         },
         "IUser": {
             "properties": {
-                "_id": {
-                    "type": "string"
-                },
                 "company": {
                     "type": "string"
                 },
@@ -196,7 +193,7 @@
                 },
                 "listings": {
                     "items": {
-                        "$ref": "#/definitions/IProperty"
+                        "$ref": "#/definitions/default"
                     },
                     "type": "array"
                 },
@@ -213,6 +210,44 @@
                     "type": "string"
                 },
                 "userName": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ListingBase": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "prices": {
+                    "$ref": "#/definitions/default_1"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
                     "type": "string"
                 }
             },
@@ -277,7 +312,48 @@
                     "type": "number"
                 },
                 "prices": {
-                    "$ref": "#/definitions/Price"
+                    "$ref": "#/definitions/default_1"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ListingOverview": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "prices": {
+                    "$ref": "#/definitions/default_1"
                 },
                 "property_id": {
                     "type": "string"
@@ -304,20 +380,6 @@
                 },
                 "username": {
                     "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Price": {
-            "properties": {
-                "CAD": {
-                    "type": "number"
-                },
-                "EUR": {
-                    "type": "number"
-                },
-                "USD": {
-                    "type": "number"
                 }
             },
             "type": "object"
@@ -372,6 +434,70 @@
             "type": "string"
         },
         "T": {
+            "type": "object"
+        },
+        "default": {
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "bathrooms": {
+                    "type": "number"
+                },
+                "bedrooms": {
+                    "type": "number"
+                },
+                "building_size": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "images": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "land_size": {
+                    "type": "number"
+                },
+                "prices": {
+                    "$ref": "#/definitions/default_1"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "default_1": {
+            "properties": {
+                "CAD": {
+                    "type": "number"
+                },
+                "EUR": {
+                    "type": "number"
+                },
+                "USD": {
+                    "type": "number"
+                }
+            },
             "type": "object"
         }
     }

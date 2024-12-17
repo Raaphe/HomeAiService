@@ -1,9 +1,10 @@
-import { ListingOverview } from "../payloads/dto/listing.dto";
-import  ListingDetailed from "../payloads/dto/listingDetailed.dto";
+import ListingDetailed from "../payloads/dto/listingDetailed.dto";
 import axios from "axios";
 import ListingService from "../services/listing.service";
 import InferenceService from "../services/inference.service";
 import HouseDTO from "../payloads/dto/houseInfo.dto";
+import IProperty from "../interfaces/listing.interface";
+import ResponseObject from "../interfaces/response.interface";
 
 class RealtorApi {
     static baseUrl: string = "https://real-estate-api-xi.vercel.app";
@@ -21,28 +22,36 @@ class RealtorApi {
         return url;
     }
 
-    static async fetchPropertiesList(zipCode: string, number_of_listings: number = 25) {
+    static async fetchPropertiesList(zipCode: string, number_of_listings: number = 25) : Promise<ResponseObject<ListingDetailed | {}>> {
         const url = this.getUrl('propertyListings', { zip_code: zipCode, number_of_listings });
-        let apiListings: ListingOverview[] = [];
-        let mongooseListings: ListingOverview[] = [];
+        let apiListings: ListingDetailed[] = [];
+        let mongooseListings: IProperty[] = [];
 
         try {
             // Attempt to fetch listings from the API
             const response = await axios.get<{
-                listings?: ListingOverview[];
+                listings?: ListingDetailed[];
             }>(url);
 
             apiListings = response.data.listings || [];
-        } catch (error) {
-            console.error('Error fetching from API:', error);
+        } catch (error: any) {
+            return {
+                data: {},
+                code: 500,
+                message: error.message,
+            }
         }
 
         try {
             // Fetch listings from MongoDB
             const mongooseListingRes = await ListingService.getAllListings();
             mongooseListings = mongooseListingRes.data?.filter(l => l.zip_code === zipCode) || [];
-        } catch (error) {
-            console.error('Error fetching from MongoDB:', error);
+        } catch (error: any) {
+            return {
+                data: {},
+                code: 500,
+                message: error.message,
+            }
         }
 
         // Ensure equal number of listings from both sources, or fill from one if the other lacks enough
@@ -51,7 +60,7 @@ class RealtorApi {
         const apiCount = apiListings.length;
         const mongooseCount = mongooseListings.length;
 
-        let finalListings: ListingOverview[];
+        let finalListings: ListingDetailed[];
 
         // Fetch half from each source if both have enough
         if (apiCount >= halfListings && mongooseCount >= halfListings) {
@@ -87,7 +96,11 @@ class RealtorApi {
         }
 
         console.log('Final Listings:', finalListings);
-        return finalListings;
+        return {
+            code: 200,
+            message: "Successfully fetched listings",
+            data: finalListings,
+        };
     }
 
 
@@ -126,6 +139,29 @@ class RealtorApi {
             throw new Error('Failed to fetch property details.');
         }
     }
+}
+
+const mixListingsTypes = (listingsOverview: ListingDetailed[], properties: IProperty[]): IProperty[] => {
+    listingsOverview.forEach(listing => {
+        properties.push({
+            zip_code: listing.zip_code,
+            bathrooms: listing.bathrooms,
+            url: listing.url,
+            bedrooms: listing.bedrooms,
+            property_id: listing.property_id,
+            images: listing.images,
+            description: listing.description,
+            prices: listing.prices,
+            property_type: listing.property_type,
+            address: listing.address,
+            city: listing.city,
+            state: listing.state,
+            building_size: listing.building_size,
+            land_size: listing.land_size
+        })
+    })
+
+    return listingsOverview;
 }
 
 export default RealtorApi;

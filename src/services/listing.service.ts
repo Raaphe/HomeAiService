@@ -4,11 +4,12 @@ import ListingDetailed from "../payloads/dto/listingDetailed.dto";
 import CreateListingDTO from "../payloads/dto/createListing.dto";
 import {UserService} from "./users.service"
 import mongoose from "mongoose";
+import IProperty from "../interfaces/listing.interface";
 
 
 export default class ListingService {
 
-    public static async getAllListings(): Promise<ResponseObject<ListingDetailed[] | null>> {
+    public static async getAllListings(): Promise<ResponseObject<IProperty[] | null>> {
         try {
             const users = await User.find({}, 'listings');
             const listings = users.flatMap(u => u.listings ?? []);
@@ -91,7 +92,7 @@ export default class ListingService {
         try {
             const listing = await ListingService.getAllListings().then(res => {
                 res.data?.filter(u => u.property_id === property_id);
-            }).catch(e => {
+            }).catch(() => {
                 return {
                     code: 500,
                     message: "Error fetching listing.",
@@ -129,7 +130,7 @@ export default class ListingService {
                 };
             }
 
-            const index = user.listings.findIndex(l => l.property_id === dto.property_id);
+            const index = user.listings.findIndex((l: IProperty) => l.property_id === dto.property_id);
 
             if (index === -1) {
                 return {
@@ -199,7 +200,7 @@ export default class ListingService {
                 if (!user.listings || !Array.isArray(user.listings)) {
                     return false;
                 }
-                const listingIndex = user.listings.findIndex(l => l.property_id === property_id);
+                const listingIndex = user.listings.findIndex((l : IProperty) => l.property_id === property_id);
                 return listingIndex !== -1;
             });
 
@@ -220,7 +221,7 @@ export default class ListingService {
             }
 
             // Remove the listing from the user's array
-            users[userIndex].listings.splice(users[userIndex].listings.findIndex(l => l.property_id === property_id), 1);
+            users[userIndex].listings.splice(users[userIndex].listings.findIndex((l: IProperty) => l.property_id === property_id), 1);
 
             // Update the user in the database
             const updateUserResult = await UserService.editUser(users[userIndex]);

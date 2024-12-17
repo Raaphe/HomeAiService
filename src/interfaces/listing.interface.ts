@@ -1,7 +1,6 @@
-import {Price} from "../payloads/dto/listing.dto";
+import Price from "../payloads/dto/Price.dto";
 
-
-export interface IProperty {
+export default interface IProperty {
   property_id?: string;
   address?: string;
   city?: string;

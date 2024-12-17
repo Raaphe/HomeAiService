@@ -1,4 +1,4 @@
-import {ListingBase} from "./listing.dto";
+import ListingBase from "./listing.dto";
 
 export default interface ListingDetailed extends ListingBase {
     land_size?: number;

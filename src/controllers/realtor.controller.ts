@@ -4,50 +4,46 @@ import realtorApi from "../api/realtor.api";
 
 export class RealtorController {
 
-    public async getProperties(req: Request, res: Response): Promise<void> {
+    public async getProperties(req: Request, res: Response): Promise<Response> {
         try {
             const { zip_code } = req.params;
             const { number_of_listings } = req.body;
 
             if (!zip_code || isNaN(Number(zip_code))) {
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'Invalid zip_code provided. It must be a numeric string.',
-                    "code": 400,
-                    "data": {}
+                    code: 400,
+                    data: {}
                 });
-                return;
             }
 
             const numberOfListings = number_of_listings ? Number(number_of_listings) : undefined;
 
             if (numberOfListings !== undefined && isNaN(numberOfListings)) {
-                res.status(400).json({
-                    message: 'Invalid number_of_listings provided. It must be a numeric value.'
+                return res.status(400).json({
+                    message: 'Invalid number_of_listings provided. It must be a numeric value.',
+                    code: 400,
+                    data: []
                 });
-                return;
             }
 
             const propertiesList = await RealtorApi.fetchPropertiesList(zip_code, numberOfListings);
 
-            if (!propertiesList.length) {
-                res.status(404).json({
-                    message: `No properties found for the zip code: ${zip_code}`,
-                    "code": 404,
-                    "data": {}
+            if (!propertiesList) {
+                return res.status(500).json({
+                    message: `Error fetching listings.`,
+                    code: 500,
+                    data: []
                 });
-                return;
             }
 
-            res.status(200).json({
-                total_number_of_listings: propertiesList.length,
-                listings: propertiesList
-            });
+            return res.status(propertiesList.code).json(propertiesList);
         } catch (error: any) {
             console.error('Internal server error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 message: 'Internal server error.',
-                "code": 500,
-                "data": {}
+                code: 500,
+                data: {}
             });
         }
     }

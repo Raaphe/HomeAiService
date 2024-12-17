@@ -64,11 +64,21 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
+
+app.use(`${api_prefix_v1}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+swaggerOptions.definition.servers = [
+  {
+    url: `https://homeaiservice.onrender.com${api_prefix_v1}`,
+    description: 'Development server (HTTP) for v1',
+  }
+]
+
+fs.writeFileSync('./swagger.json', JSON.stringify(swaggerJsdoc(swaggerOptions), null, 2));
 
 const filter = new AuthenticationFilter();
 
-app.use(`${api_prefix_v1}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(api_prefix_v1, realtorRoute);
 app.use(api_prefix_v1, userRoute);

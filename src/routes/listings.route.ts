@@ -95,7 +95,7 @@ router.post("/listing", ListingsController.CreateListing)
  *                 data:
  *                   type: array
  *                   items:
- *                      $ref: "#/components/schemas/ListingDetailed"
+ *                      $ref: "#/components/schemas/IProperty"
  *       "500":
  *         description: Internal Server Error
  *         content:

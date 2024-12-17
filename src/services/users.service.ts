@@ -1,5 +1,5 @@
 import ResponseObject from "../interfaces/response.interface";
-import { IUser } from "../interfaces/user.interface";
+import IUser from "../interfaces/user.interface";
 import User from "../models/user.model";
 import jwt from "jsonwebtoken";
 import {config} from "../config/config";
@@ -68,23 +68,6 @@ export class UserService {
         }
     }
 
-    static async getUserByOID(objectId: string): Promise<ResponseObject<IUser | null>> {
-        try {
-            const user = await User.findById(objectId);
-            return {
-                code: 200,
-                message: "Successfully fetched user",
-                data: user
-            };
-        } catch (e: any) {
-            return {
-                code: 500,
-                message: "Error getting user.",
-                data: null
-            };
-        }
-    }
-
     static async getUserByEmail(email: string): Promise<ResponseObject<IUser | null>> {
         try {
             const user = await User.findOne({ email });
@@ -102,26 +85,9 @@ export class UserService {
         }
     }
 
-    static async deleteUserByOID(objectId: string): Promise<ResponseObject<IUser | null>> {
-        try {
-            const user = await User.findByIdAndDelete(objectId);
-            return {
-                code: 200,
-                message: "Successfully deleted user",
-                data: user
-            };
-        } catch (e: any) {
-            return {
-                code: 500,
-                message: "Error deleting user.",
-                data: null
-            };
-        }
-    }
-
     static async editUser(user: IUser): Promise<ResponseObject<IUser | null>> {
         try {
-            if (!user._id) {
+            if (!user) {
                 return {
                     code: 400,
                     message: "User ID is required for updating",
@@ -129,7 +95,7 @@ export class UserService {
                 };
             }
 
-            const result = await User.updateOne({ _id: user._id }, { $set: user });
+            const result = await User.updateOne({ email: user.email }, { $set: user });
 
             if (result.matchedCount === 0) {
                 return {
@@ -139,11 +105,11 @@ export class UserService {
                 };
             }
 
-            const updatedUser = await User.findById(user._id);
+            const updatedUser = await UserService.getUserByEmail(user.email);
             return {
                 code: 200,
                 message: "Successfully updated user",
-                data: updatedUser
+                data: updatedUser.data
             };
         } catch (e: any) {
             return {

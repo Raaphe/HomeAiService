@@ -18,7 +18,6 @@ export class AuthService {
     static async register(registrationDto: RegistrationDTO): Promise<ResponseObject<string>> {
         try {
             await User.create({
-                _id: new mongoose.Types.ObjectId(),
                 listings: [],
                 first_name: registrationDto.first_name,
                 last_name: registrationDto.last_name,

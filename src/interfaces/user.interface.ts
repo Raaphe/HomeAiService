@@ -1,7 +1,6 @@
-import {IProperty} from "./listing.interface";
+import IProperty from "./listing.interface";
 
-export interface IUser {
-  _id: string;
+export default interface IUser {
   email: string;
   password: string;
   userName: string;
