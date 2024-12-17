@@ -10,7 +10,7 @@
     "test:load": "artillery run load-test.yml",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'src/tests/*.test.ts' --exit",
     "generate-client-code": "openapi-generator-cli generate -i swagger.json -g typescript-axios -o ../../frontend/api/generated-client",
-    "generate-schema": "typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\""
+    "generate-schema": "typescript-json-schema tsconfig.json \"*\" --include \"src/interfaces/*.ts\" \"src/payloads/dto/*.ts\" \"src/models/*.ts\" --out \"src/routes/schemas.json\" && node ./correct-schema.js"
   },
   "keywords": [],
   "author": "",

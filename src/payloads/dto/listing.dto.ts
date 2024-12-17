@@ -1,4 +1,4 @@
-import Price from "./Price.dto";
+import { Price } from "./price.dto";
 
 export default interface ListingBase {
     property_id?: string;

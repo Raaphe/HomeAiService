@@ -1,4 +1,4 @@
-import Price from "../payloads/dto/Price.dto";
+import { Price } from "../payloads/dto/price.dto";
 
 export default interface IProperty {
   property_id?: string;

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import IUser  from '../interfaces/user.interface';
-import Price from "../payloads/dto/Price.dto";
+import { Price } from "../payloads/dto/price.dto";
 import IProperty from "../interfaces/listing.interface";
 
 

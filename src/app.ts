@@ -63,6 +63,7 @@ const swaggerOptions = {
   apis: [path.join(__dirname, './routes/*.js')],
 };
 
+
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 app.use(`${api_prefix_v1}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
