@@ -46,7 +46,7 @@ To ensure that the app doesn't use up the limited RAM on our render machine, dep
 
 ---
 
-> ![NOTE]
+> [!NOTE]
 > We do use environment variables that follow this structure :
 
 ```env
