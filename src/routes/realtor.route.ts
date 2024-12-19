@@ -9,6 +9,7 @@ const realtorController = new RealtorController();
  * /listings/available/{zip_code}:
  *   post:
  *     summary: Retrieve a list of available properties
+ *     security: []
  *     description: Retrieve a list of available properties based on the zip code and optionally the number of listings to retrieve.
  *     tags: [Real Estate API]
  *     parameters:
@@ -59,6 +60,7 @@ router.post('/listings/available/:zip_code', realtorController.getProperties);
  * /listings/available/:
  *   get:
  *     summary: Fetch property details for a given listing URL.
+ *     security: []
  *     description: Retrieves detailed property information using the provided listing URL.
  *     tags: [Real Estate API]
  *     parameters:

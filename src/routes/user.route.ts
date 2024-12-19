@@ -36,6 +36,7 @@ router.get('/users', UserController.getAllUsers);
  *     tags:
  *       - Users
  *     summary: Gets a user by a valid token.
+ *     security: []
  *     description: Retrieves a specific user from values in an access token.
  *     parameters:
  *       - in: path

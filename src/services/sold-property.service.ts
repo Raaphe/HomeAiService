@@ -258,7 +258,7 @@ export class SoldPropertyService {
             salesByYear: this.getSalesByYear(),
         };
 
-        const filePath = path.join(__dirname, relativePath);
+        const filePath = path.join(__dirname, "../../" + relativePath);
         await fs.promises.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
         console.log("Graph functions written successfully.");
     }

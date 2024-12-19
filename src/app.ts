@@ -3,7 +3,6 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import { errorMiddleware } from './middlewares/error.middleware';
-import AuthenticationFilter from './middlewares/auth.middleware';
 import authRoute from './routes/auth.route';
 import listingRoute from "./routes/listings.route"
 import realtorRoute from './routes/realtor.route';
@@ -77,9 +76,6 @@ swaggerOptions.definition.servers = [
 ]
 
 fs.writeFileSync('./swagger.json', JSON.stringify(swaggerJsdoc(swaggerOptions), null, 2));
-
-const filter = new AuthenticationFilter();
-
 
 app.use(api_prefix_v1, realtorRoute);
 app.use(api_prefix_v1, userRoute);

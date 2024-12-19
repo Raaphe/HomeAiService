@@ -11,6 +11,7 @@ const soldPropertyController = new SoldPropertyController();
  *     tags:
  *       - Historic data
  *     summary: Get average price by bathrooms
+ *     security: []
  *     description: Returns the average price of properties grouped by the number of bathrooms.
  *     responses:
  *       200:
@@ -27,6 +28,7 @@ router.get('/history/average-price-by-bathrooms', soldPropertyController.getAver
  *     tags:
  *       - Historic data
  *     summary: Get average price by bedrooms
+ *     security: []
  *     description: Returns the average price of properties grouped by the number of bedrooms.
  *     responses:
  *       200:
@@ -59,6 +61,7 @@ router.get('/history/average-price-by-state', soldPropertyController.getAverageP
  *     tags:
  *       - Historic data
  *     summary: Get property count by size
+ *     security: []
  *     description: Returns the count of properties grouped by their size.
  *     responses:
  *       200:
@@ -75,6 +78,7 @@ router.get('/history/properties-count-by-size', soldPropertyController.getProper
  *     tags:
  *       - Historic data
  *     summary: Get property count by state
+ *     security: []
  *     description: Returns the count of properties for each state.
  *     responses:
  *       200:
@@ -91,6 +95,7 @@ router.get('/history/properties-count-by-state', soldPropertyController.getPrope
  *     tags:
  *       - Historic data
  *     summary: Get sales by year
+ *     security: []
  *     description: Returns the number of sales of properties grouped by year.
  *     responses:
  *       200:

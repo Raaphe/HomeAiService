@@ -1,7 +1,9 @@
 import {Router} from "express";
 import { ListingsController } from "../controllers/listings.controller";
+import AuthenticationFilter from "../middlewares/auth.middleware";
 
 const router = Router();
+const filter = new AuthenticationFilter().authFilter;
 
 /**
  * @swagger
@@ -67,7 +69,7 @@ const router = Router();
  *                   type: boolean
  *                   example: false
  */
-router.post("/listing", ListingsController.CreateListing)
+router.post("/listing", filter,  ListingsController.CreateListing)
 
 
 /**
@@ -77,6 +79,7 @@ router.post("/listing", ListingsController.CreateListing)
  *     tags:
  *       - Listings
  *     summary: Retrieve all listings
+ *     security: []
  *     description: Fetches all the property listings from the system.
  *     responses:
  *       "200":
@@ -121,6 +124,7 @@ router.get("/listings", ListingsController.GetAllListings);
  *     tags:
  *       - Listings
  *     summary: Get a specific listing by ID
+ *     security: []
  *     description: Retrieves a specific property listing using its unique identifier.
  *     parameters:
  *       - in: path
@@ -243,7 +247,7 @@ router.get("/listing/:id", ListingsController.GetListingById);
  *                   type: boolean
  *                   example: false
  */
-router.put("/listing", ListingsController.UpdateListing);
+router.put("/listing", filter, ListingsController.UpdateListing);
 
 /**
  * @swagger
@@ -261,7 +265,7 @@ router.put("/listing", ListingsController.UpdateListing);
  *         schema:
  *           type: string
  *     responses:
- *       200:
+ *       204:
  *         description: Listing successfully deleted
  *         content:
  *           application/json:
@@ -326,6 +330,6 @@ router.put("/listing", ListingsController.UpdateListing);
  *                   type: boolean
  *                   example: false
  */
-router.delete("/listing/:id", ListingsController.DeleteListing);
+router.delete("/listing/:id", filter,  ListingsController.DeleteListing);
 
 export default router;

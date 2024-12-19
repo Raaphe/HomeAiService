@@ -953,6 +953,7 @@
           "Listings"
         ],
         "summary": "Retrieve all listings",
+        "security": [],
         "description": "Fetches all the property listings from the system.",
         "responses": {
           "200": {
@@ -1013,6 +1014,7 @@
           "Listings"
         ],
         "summary": "Get a specific listing by ID",
+        "security": [],
         "description": "Retrieves a specific property listing using its unique identifier.",
         "parameters": [
           {
@@ -1218,6 +1220,7 @@
     "/listings/available/{zip_code}": {
       "post": {
         "summary": "Retrieve a list of available properties",
+        "security": [],
         "description": "Retrieve a list of available properties based on the zip code and optionally the number of listings to retrieve.",
         "tags": [
           "Real Estate API"
@@ -1289,6 +1292,7 @@
     "/listings/available/": {
       "get": {
         "summary": "Fetch property details for a given listing URL.",
+        "security": [],
         "description": "Retrieves detailed property information using the provided listing URL.",
         "tags": [
           "Real Estate API"
@@ -1372,6 +1376,7 @@
           "Historic data"
         ],
         "summary": "Get average price by bathrooms",
+        "security": [],
         "description": "Returns the average price of properties grouped by the number of bathrooms.",
         "responses": {
           "200": {
@@ -1389,6 +1394,7 @@
           "Historic data"
         ],
         "summary": "Get average price by bedrooms",
+        "security": [],
         "description": "Returns the average price of properties grouped by the number of bedrooms.",
         "responses": {
           "200": {
@@ -1423,6 +1429,7 @@
           "Historic data"
         ],
         "summary": "Get property count by size",
+        "security": [],
         "description": "Returns the count of properties grouped by their size.",
         "responses": {
           "200": {
@@ -1440,6 +1447,7 @@
           "Historic data"
         ],
         "summary": "Get property count by state",
+        "security": [],
         "description": "Returns the count of properties for each state.",
         "responses": {
           "200": {
@@ -1457,6 +1465,7 @@
           "Historic data"
         ],
         "summary": "Get sales by year",
+        "security": [],
         "description": "Returns the number of sales of properties grouped by year.",
         "responses": {
           "200": {
@@ -1508,6 +1517,7 @@
           "Users"
         ],
         "summary": "Gets a user by a valid token.",
+        "security": [],
         "description": "Retrieves a specific user from values in an access token.",
         "parameters": [
           {
