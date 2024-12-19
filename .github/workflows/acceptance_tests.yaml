@@ -13,10 +13,13 @@ jobs:
     steps:
       - name: Generate random email and create user
         run: |
-          RANDOM_EMAIL="randomEmail$(date +%s)@test.com"
+          # Generate a random string for the email
+          RANDOM_EMAIL="$(date +%s)@test.com"
           
+          # Print the random email (optional)
           echo "Generated random email: $RANDOM_EMAIL"
           
+          # Make POST request to create the user with the random email
           response=$(curl -X 'POST' \
             'https://homeaiservice.onrender.com/api/v1/register' \
             -H 'accept: application/json' \
@@ -31,9 +34,36 @@ jobs:
               \"pfp\": \"https://example.com/profile.jpg\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
+          # Check if the response code is not 200 (success)
           if [ "$response" -ne 201 ]; then
-            echo "Request failed with status code $response"
+            echo "User creation failed with status code $response"
             exit 1
           else
             echo "User created successfully with email $RANDOM_EMAIL"
+          fi
+          
+          # Save the email to a temporary file for the next step
+          echo "$RANDOM_EMAIL" > random_email.txt
+
+      - name: Test authentication with created user
+        run: |
+          # Read the random email from the file
+          RANDOM_EMAIL=$(cat random_email.txt)
+          
+          # Make POST request to authenticate the user
+          auth_response=$(curl -X 'POST' \
+            'https://homeaiservice.onrender.com/api/v1/auth' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"email\": \"$RANDOM_EMAIL\",
+              \"password\": \"P@ssw0rd123\"
+            }" --write-out "%{http_code}" --silent --output /dev/null)
+          
+          # Check if the response code is not 200 (success)
+          if [ "$auth_response" -ne 200 ]; then
+            echo "Authentication failed with status code $auth_response"
+            exit 1
+          else
+            echo "Authentication succeeded for email $RANDOM_EMAIL"
           fi
