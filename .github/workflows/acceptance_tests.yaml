@@ -114,3 +114,20 @@ jobs:
           else
             echo "Successfully fetched all listings"
           fi
+
+      - name: Fetch available listings
+        run: |
+          available_listings_response=$(curl -X 'POST' \
+            'https://homeaiservice.onrender.com/api/v1/listings/available/11211' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "number_of_listings": 25
+            }' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$available_listings_response" -ne 200 ]; then
+            echo "Failed to fetch available listings with status code $available_listings_response"
+            exit 1
+          else
+            echo "Successfully fetched available listings"
+          fi
