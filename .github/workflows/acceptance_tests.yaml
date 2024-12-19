@@ -11,6 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run after render deploy succeeds
+      - name: Generate random email and create user
         run: |
-          echo "The Build and Deploy Render job has completed successfully, now running follow-up tasks."
+          # Generate a random string for the email
+          RANDOM_EMAIL="randomEmail$(date +%s)@test.com"
+          
+          # Print the random email (optional)
+          echo "Generated random email: $RANDOM_EMAIL"
+          
+          # Make POST request to create the user with the random email
+          response=$(curl -X 'POST' \
+            'https://homeaiservice.onrender.com/api/v1/register' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"first_name\": \"test\",
+              \"last_name\": \"user\",
+              \"company_name\": \"Acme Corp\",
+              \"email\": \"$RANDOM_EMAIL\",
+              \"password\": \"P@ssw0rd123\",
+              \"phone\": \"+1234567890\",
+              \"pfp\": \"https://example.com/profile.jpg\"
+            }" --write-out "%{http_code}" --silent --output /dev/null)
+          
+          # Check if the response code is not 200 (success)
+          if [ "$response" -ne 200 ]; then
+            echo "Request failed with status code $response"
+            exit 1  # Exit the workflow if the request fails
+          else
+            echo "User created successfully with email $RANDOM_EMAIL"
+          fi
