@@ -14,7 +14,7 @@ jobs:
       - name: Generate random email and create user
         run: |
           # Generate a random string for the email
-          RANDOM_EMAIL="$(date +%s)@test.com"
+          RANDOM_EMAIL="randomEmail$(date +%s)@test.com"
           
           # Print the random email (optional)
           echo "Generated random email: $RANDOM_EMAIL"
@@ -34,23 +34,19 @@ jobs:
               \"pfp\": \"https://example.com/profile.jpg\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
-          # Check if the response code is not 200 (success)
-          if [ "$response" -ne 201 ]; then
+          if [ "$response" -ne 200 ]; then
             echo "User creation failed with status code $response"
             exit 1
           else
             echo "User created successfully with email $RANDOM_EMAIL"
           fi
           
-          # Save the email to a temporary file for the next step
           echo "$RANDOM_EMAIL" > random_email.txt
 
       - name: Test authentication with created user
         run: |
-          # Read the random email from the file
           RANDOM_EMAIL=$(cat random_email.txt)
           
-          # Make POST request to authenticate the user
           auth_response=$(curl -X 'POST' \
             'https://homeaiservice.onrender.com/api/v1/auth' \
             -H 'accept: application/json' \
@@ -60,10 +56,61 @@ jobs:
               \"password\": \"P@ssw0rd123\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
-          # Check if the response code is not 200 (success)
           if [ "$auth_response" -ne 200 ]; then
             echo "Authentication failed with status code $auth_response"
             exit 1
           else
             echo "Authentication succeeded for email $RANDOM_EMAIL"
+          fi
+
+      - name: Create listing for the user
+        run: |
+          RANDOM_EMAIL=$(cat random_email.txt)
+          
+          listing_response=$(curl -X 'POST' \
+            'https://homeaiservice.onrender.com/api/v1/listing' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"address\": \"123 Test Street\",
+              \"bathrooms\": 2,
+              \"bedrooms\": 3,
+              \"building_size\": 1200,
+              \"city\": \"Test City\",
+              \"description\": \"A lovely test property.\",
+              \"email\": \"$RANDOM_EMAIL\",
+              \"images\": [
+                \"https://example.com/image1.jpg\",
+                \"https://example.com/image2.jpg\"
+              ],
+              \"land_size\": 5000,
+              \"prices\": {
+                \"CAD\": 500000,
+                \"EUR\": 340000,
+                \"USD\": 400000
+              },
+              \"property_type\": \"House\",
+              \"state\": \"Test State\",
+              \"url\": \"https://example.com/property-listing\",
+              \"zip_code\": \"12345\"
+            }" --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$listing_response" -ne 200 ]; then
+            echo "Listing creation failed with status code $listing_response"
+            exit 1
+          else
+            echo "Listing created successfully for email $RANDOM_EMAIL"
+          fi
+
+      - name: Fetch all listings
+        run: |
+          all_listings_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/listings' \
+            -H 'accept: application/json' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$all_listings_response" -ne 200 ]; then
+            echo "Failed to fetch listings with status code $all_listings_response"
+            exit 1
+          else
+            echo "Successfully fetched all listings"
           fi
