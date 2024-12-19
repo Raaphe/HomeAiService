@@ -7,19 +7,16 @@ on:
       - completed
 
 jobs:
-  follow_up:
+  run-acceptance-tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Generate random email and create user
         run: |
-          # Generate a random string for the email
-          RANDOM_EMAIL="randomEmail$(date +%s)@test.com"
+          RANDOM_EMAIL="$(date +%s)@test.com"
           
-          # Print the random email (optional)
           echo "Generated random email: $RANDOM_EMAIL"
           
-          # Make POST request to create the user with the random email
           response=$(curl -X 'POST' \
             'https://homeaiservice.onrender.com/api/v1/register' \
             -H 'accept: application/json' \
