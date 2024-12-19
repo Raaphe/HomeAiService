@@ -6,7 +6,7 @@ on:
       - "main"
 
 jobs:
-  test:
+  trigger-render-deploy:
     runs-on: ubuntu-latest
 
     steps:
