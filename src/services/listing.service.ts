@@ -5,6 +5,7 @@ import CreateListingDTO from "../payloads/dto/createListing.dto";
 import {UserService} from "./users.service"
 import mongoose from "mongoose";
 import IProperty from "../interfaces/listing.interface";
+import { EditListingDto } from "../payloads/dto/editListing.dto";
 
 
 export default class ListingService {
@@ -118,7 +119,7 @@ export default class ListingService {
         }
     }
 
-    public static async editListing(dto: CreateListingDTO): Promise<ResponseObject<boolean>> {
+    public static async editListing(dto: EditListingDto): Promise<ResponseObject<boolean>> {
         try {
             const user = await UserService.getUserByEmail(dto.email.trim()).then((user) => user.data);
 
@@ -186,7 +187,7 @@ export default class ListingService {
 
     public static async deleteListing(property_id: string): Promise<ResponseObject<boolean>> {
         try {
-            const users = await UserService.getAllUsers().then((res) => res.data);
+            const users = await User.find();
 
             if (!users || !Array.isArray(users)) {
                 return {
@@ -196,15 +197,17 @@ export default class ListingService {
                 };
             }
 
-            const userIndex = users.findIndex(user => {
-                if (!user.listings || !Array.isArray(user.listings)) {
-                    return false;
-                }
-                const listingIndex = user.listings.findIndex((l : IProperty) => l.property_id === property_id);
-                return listingIndex !== -1;
-            });
+            let user;
+            users.forEach(u => {
+                u.listings?.forEach((l, index) => {
+                    if (l.property_id === property_id) {
+                        u.listings?.splice(index,1);
+                        user = u;
+                    }
+                });
+            });            
 
-            if (userIndex === -1 || !users[userIndex]) {
+            if (!user) {
                 return {
                     code: 404,
                     message: `No listing found with property_id ${property_id}`,
@@ -212,19 +215,9 @@ export default class ListingService {
                 };
             }
 
-            if (!users[userIndex].listings) {
-                return {
-                    code: 404,
-                    message: `No listing found with property_id ${property_id}`,
-                    data: false
-                };
-            }
-
-            // Remove the listing from the user's array
-            users[userIndex].listings.splice(users[userIndex].listings.findIndex((l: IProperty) => l.property_id === property_id), 1);
 
             // Update the user in the database
-            const updateUserResult = await UserService.editUser(users[userIndex]);
+            const updateUserResult = await UserService.editUser(user);
 
             if (updateUserResult.code !== 200) {
                 return {

@@ -192,7 +192,7 @@ router.get("/listing/:id", ListingsController.GetListingById);
  *       content:
  *         application/json:
  *           schema:
- *              $ref: "#/components/schemas/CreateListingDTO"
+ *              $ref: "#/components/schemas/EditListingDto"
  *     responses:
  *       "200":
  *         description: Listing updated successfully.

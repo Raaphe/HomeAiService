@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import CreateListingDTO from "../payloads/dto/createListing.dto";
 import ListingService from "../services/listing.service";
+import { EditListingDto } from '../payloads/dto/editListing.dto';
 
 export class ListingsController {
     static async CreateListing(req: Request, res: Response): Promise<Response> {
@@ -58,7 +59,7 @@ export class ListingsController {
 
     static async UpdateListing(req: Request, res: Response): Promise<Response> {
         try {
-            const dto: CreateListingDTO = req.body;
+            const dto: EditListingDto = req.body;
 
             if (!req.body.property_id) {
                 return res.status(400).json({

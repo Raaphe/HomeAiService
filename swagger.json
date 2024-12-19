@@ -59,6 +59,56 @@
           "prices": {
             "$ref": "#/components/schemas/Price"
           },
+          "property_type": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "zip_code": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "EditListingDto": {
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "bathrooms": {
+            "type": "number"
+          },
+          "bedrooms": {
+            "type": "number"
+          },
+          "building_size": {
+            "type": "number"
+          },
+          "city": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "images": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "land_size": {
+            "type": "number"
+          },
+          "prices": {
+            "$ref": "#/components/schemas/Price"
+          },
           "property_id": {
             "type": "string"
           },
@@ -816,7 +866,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateListingDTO"
+                "$ref": "#/components/schemas/EditListingDto"
               }
             }
           }
