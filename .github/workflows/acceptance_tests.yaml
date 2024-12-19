@@ -2,7 +2,7 @@ name: Follow Up Job After Render Deploy
 
 on:
   workflow_run:
-    workflows: ["trigger_render_deploy"]
+    workflows: ["Build and Deploy Render"]
     types:
       - completed
 
