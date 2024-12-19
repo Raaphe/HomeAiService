@@ -131,3 +131,81 @@ jobs:
           else
             echo "Successfully fetched available listings"
           fi
+
+      - name: Fetch average price by bathrooms
+        run: |
+          avg_price_bathrooms_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/average-price-by-bathrooms' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$avg_price_bathrooms_response" -ne 200 ]; then
+            echo "Failed to fetch average price by bathrooms with status code $avg_price_bathrooms_response"
+            exit 1
+          else
+            echo "Successfully fetched average price by bathrooms"
+          fi
+
+      - name: Fetch average price by bedrooms
+        run: |
+          avg_price_bedrooms_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/average-price-by-bedrooms' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$avg_price_bedrooms_response" -ne 200 ]; then
+            echo "Failed to fetch average price by bedrooms with status code $avg_price_bedrooms_response"
+            exit 1
+          else
+            echo "Successfully fetched average price by bedrooms"
+          fi
+
+      - name: Fetch average price by state
+        run: |
+          avg_price_state_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/average-price-by-state' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$avg_price_state_response" -ne 200 ]; then
+            echo "Failed to fetch average price by state with status code $avg_price_state_response"
+            exit 1
+          else
+            echo "Successfully fetched average price by state"
+          fi
+
+      - name: Fetch properties count by size
+        run: |
+          properties_count_size_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/properties-count-by-size' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$properties_count_size_response" -ne 200 ]; then
+            echo "Failed to fetch properties count by size with status code $properties_count_size_response"
+            exit 1
+          else
+            echo "Successfully fetched properties count by size"
+          fi
+
+      - name: Fetch properties count by state
+        run: |
+          properties_count_state_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/properties-count-by-state' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$properties_count_state_response" -ne 200 ]; then
+            echo "Failed to fetch properties count by state with status code $properties_count_state_response"
+            exit 1
+          else
+            echo "Successfully fetched properties count by state"
+          fi
+
+      - name: Fetch sales by year
+        run: |
+          sales_by_year_response=$(curl -X 'GET' \
+            'https://homeaiservice.onrender.com/api/v1/history/sales-by-year' \
+            -H 'accept: */*' --write-out "%{http_code}" --silent --output /dev/null)
+          
+          if [ "$sales_by_year_response" -ne 200 ]; then
+            echo "Failed to fetch sales by year with status code $sales_by_year_response"
+            exit 1
+          else
+            echo "Successfully fetched sales by year"
+          fi
