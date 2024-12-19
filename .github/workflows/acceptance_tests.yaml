@@ -1,0 +1,16 @@
+name: Follow Up Job After Render Deploy
+
+on:
+  workflow_run:
+    workflows: ["trigger_render_deploy"]
+    types:
+      - completed
+
+jobs:
+  follow_up:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run after render deploy succeeds
+        run: |
+          echo "The Build and Deploy Render job has completed successfully, now running follow-up tasks."
