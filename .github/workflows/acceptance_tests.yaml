@@ -34,7 +34,7 @@ jobs:
               \"pfp\": \"https://example.com/profile.jpg\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
-          if [ "$response" -ne 200 ]; then
+          if [ "$response" -ne 201 ]; then
             echo "User creation failed with status code $response"
             exit 1
           else
