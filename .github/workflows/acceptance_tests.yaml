@@ -95,7 +95,7 @@ jobs:
               \"zip_code\": \"12345\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
-          if [ "$listing_response" -ne 200 ]; then
+          if [ "$listing_response" -ne 201 ]; then
             echo "Listing creation failed with status code $listing_response"
             exit 1
           else
