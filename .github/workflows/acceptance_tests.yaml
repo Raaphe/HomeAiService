@@ -13,13 +13,10 @@ jobs:
     steps:
       - name: Generate random email and create user
         run: |
-          # Generate a random string for the email
           RANDOM_EMAIL="randomEmail$(date +%s)@test.com"
           
-          # Print the random email (optional)
           echo "Generated random email: $RANDOM_EMAIL"
           
-          # Make POST request to create the user with the random email
           response=$(curl -X 'POST' \
             'https://homeaiservice.onrender.com/api/v1/register' \
             -H 'accept: application/json' \
@@ -34,10 +31,9 @@ jobs:
               \"pfp\": \"https://example.com/profile.jpg\"
             }" --write-out "%{http_code}" --silent --output /dev/null)
           
-          # Check if the response code is not 200 (success)
-          if [ "$response" -ne 200 ]; then
+          if [ "$response" -ne 201 ]; then
             echo "Request failed with status code $response"
-            exit 1  # Exit the workflow if the request fails
+            exit 1
           else
             echo "User created successfully with email $RANDOM_EMAIL"
           fi
